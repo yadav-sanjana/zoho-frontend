@@ -1,7 +1,5 @@
 import { NavBar } from '@/components/NavBar'
 import React from 'react'
-import logo from '../../public/logo.jpeg'
-import Image from 'next/image'
 import Sidebar from '@/components/Sidebar'
 
 const DashboardLayout = ({
