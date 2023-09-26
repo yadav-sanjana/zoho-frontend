@@ -14,6 +14,7 @@
     "jsx": "preserve",
     "rootDir": "./",
     "incremental": true,
+    "noImplicitAny": false,
     "outDir": "./build",
     "plugins": [
       {

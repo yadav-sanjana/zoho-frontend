@@ -1,3 +1,4 @@
+import { UserCircle  } from 'lucide-react'
 import MobileSideBar from './mobile-sidebar'
 
 export const NavBar = () => {
@@ -5,8 +6,8 @@ export const NavBar = () => {
     <div className='flex items-center p-4'>
       <MobileSideBar />
       <div className='flex w-full justify-end'>
-        user
 
+        <UserCircle  />
       </div>
     </div>
   )
