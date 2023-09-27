@@ -1,27 +1,20 @@
 "use client"
 import CustomerForm from '@/components/CustomerForm';
+import CustomerTable from '@/components/CustomerTable';
 import { useState } from 'react';
 
 
 const CustomerPage = () => {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  const openForm = () => {
-    setIsFormOpen(true);
-  };
-
-  const closeForm = () => {
-    setIsFormOpen(false);
-  };
 
   return (
     <div>
-      <button className="bg-blue-500 text-white px-4 py-2 rounded flex" onClick={openForm}>
-        + Add Customer
-      </button>
-      <div className='min-h-screen flex justify-items-stretch'>
+
+      {/* <div className='min-h-screen flex justify-items-stretch'> */}
         <CustomerForm />
-      </div>
+       <div className='p-10'>
+       <CustomerTable/>
+       </div>
+      {/* </div> */}
 
     </div>
   );
