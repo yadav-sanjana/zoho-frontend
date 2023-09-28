@@ -1,9 +1,10 @@
+"use client"
+import LoginForm from "@/components/LoginForm";
+
 export default function Home() {
   return (
-   <main>
-    <h1 className='p-5'>
-      Welcome to Invoicing
-    </h1>
+    <main>
+      <LoginForm />
     </main>
   )
 }

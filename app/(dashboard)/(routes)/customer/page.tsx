@@ -1,7 +1,6 @@
 "use client"
 import CustomerForm from '@/components/CustomerForm';
 import CustomerTable from '@/components/CustomerTable';
-import { useState } from 'react';
 
 
 const CustomerPage = () => {

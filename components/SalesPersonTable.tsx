@@ -3,25 +3,17 @@ import React, { useState, useEffect } from 'react';
 
 interface CustomerType {
     id: number;
-    customerType: string;
-    contactPerson: string;
-    company: string;
-    username: string;
-    customer_email: string;
-    skype_name: string;
-    designation: string;
-    work_phone: string;
-    mobile_phone: string;
-    website: string;
-  }
-  
-const CustomerTable = () => {
+    name: string;
+    email: string;
+}
+
+const SalesPersonTable = () => {
     const [data, setData] = useState<CustomerType[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person`);
                 setData(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -39,16 +31,10 @@ const CustomerTable = () => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                            company
+                                Name
                             </th>
                             <th scope="col" className="px-6 py-3">
-                            contact Person
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                            customer_email
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                            work_phone
+                                email
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Action
@@ -62,11 +48,9 @@ const CustomerTable = () => {
                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             >
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {item.company}
+                                    {item.name}
                                 </td>
-                                <td className="px-6 py-4">{item.contactPerson}</td>
-                                <td className="px-6 py-4">{item.customer_email}</td>
-                                <td className="px-6 py-4">{item.work_phone}</td>
+                                <td className="px-6 py-4">{item.email}</td>
                                 <td className="px-6 py-4">
                                     <a
                                         href="#"
@@ -84,4 +68,4 @@ const CustomerTable = () => {
     );
 };
 
-export default CustomerTable;
+export default SalesPersonTable;
