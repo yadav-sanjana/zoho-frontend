@@ -1,8 +1,7 @@
 'use client';
-import InvoiceTable from '@/components/InvoiceTable';
 import { useState } from 'react';
 
-const InvoicePage = () => {
+const UserPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const openForm = () => {
@@ -16,14 +15,11 @@ const InvoicePage = () => {
   return (
     <div>
       <button className="bg-blue-500 text-white px-4 py-2 rounded flex justify-end" onClick={openForm}>
-        + New Invoice
+        + New User
       </button>
       {/* <CustomerForm isOpen={isFormOpen} onClose={closeForm} /> */}
-      <div className='p-10'>
-      <InvoiceTable/>
-      </div>
     </div>
   );
 }
 
-export default InvoicePage
+export default UserPage

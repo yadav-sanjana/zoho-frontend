@@ -16,30 +16,39 @@ interface User {
     updatedAt: string;
 }
 
+function parseJwt(token: string): Record<string, any> | null {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            window.atob(base64)
+                .split('')
+                .map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                })
+                .join('')
+        );
+
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        // Handle any errors that may occur during parsing
+        console.error('Error parsing JWT:', error);
+        return null;
+    }
+}
+
 
 const UserLogin = () => {
-    const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-    }
     const [data, setData] = useState<LoginType | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
-            
+            const token: any = localStorage.getItem('token')
+            const decodeToken = parseJwt(token)
+            console.log(decodeToken);
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${email}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${decodeToken?.email}`);
                 setData(response.data);
-                console.log(data);
-
-                localStorage.setItem('token', response.data.token)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -50,6 +59,7 @@ const UserLogin = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token')
+        window.location.href='/'
     };
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -67,7 +77,6 @@ const UserLogin = () => {
                 size='50'
             />
 
-            {/* Dropdown menu */}
             {isDropdownOpen && data && (
                 <div className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                     <>
@@ -76,7 +85,8 @@ const UserLogin = () => {
                         </div>
                         <div className="py-1">
                             <button
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={() => { handleLogout }}
+                                onClick={handleLogout}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                             >
                                 Sign out
                             </button>

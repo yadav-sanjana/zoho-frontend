@@ -4,7 +4,7 @@ import { Montserrat } from 'next/font/google';
 import logo from '../public/logo.jpeg'
 import Image from 'next/image'
 import Link from "next/link";
-import { LayoutDashboard, FileStack, Settings, Users2, UserCheck } from 'lucide-react'
+import { LayoutDashboard, FileStack, Settings, Users2, UserCheck, User } from 'lucide-react'
 import { cn } from '@/lib/utils';
 import { usePathname} from 'next/navigation'
 
@@ -36,6 +36,12 @@ const routes = [
         icon: FileStack,
         href: '/invoice',
         color: 'text-orange-500'
+    },
+    {
+        label: "User",
+        icon: User,
+        href: '/user',
+        color: 'text-blue-500'
     },
     {
         label: "Settings",
