@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
 interface InvoiceType {
@@ -15,6 +15,7 @@ interface InvoiceType {
     customer_notes: string;
     ATC: string;
     file: string;
+    amount : number;
     status: string;
     created_by: number;
     updated_by?: null;
@@ -55,7 +56,6 @@ export interface AsTerms {
 
 const InvoiceTable = () => {
     const [data, setData] = useState<InvoiceType[]>([]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -119,14 +119,14 @@ const InvoiceTable = () => {
                                 <td className="px-6 py-4">{item.as_customer.firstname}</td>
                                 <td className="px-6 py-4">{item.status}</td>
                                 <td className="px-6 py-4">{item.due_date}</td>
-                                <td className="px-6 py-4">24124</td>
+                                <td className="px-6 py-4">{item.amount}</td>
                                 <td className="px-6 py-4">123</td>
                                 <td className="px-6 py-4">
                                     <a
                                         href="#"
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                     >
-                                       <EyeIcon/>
+                                        <EyeIcon />
                                     </a>
                                 </td>
                             </tr>
