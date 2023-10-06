@@ -1,6 +1,6 @@
 'use client';
-import InvoiceForm from '@/components/InvoiceForm';
-import InvoiceTable from '@/components/InvoiceTable';
+import InvoiceForm from '@/components/invoice/InvoiceForm';
+import InvoiceTable from '@/components/invoice/InvoiceTable';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 

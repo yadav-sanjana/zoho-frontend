@@ -1,6 +1,6 @@
 "use client"
-import CustomerForm from '@/components/CustomerForm';
-import CustomerTable from '@/components/CustomerTable';
+import CustomerForm from '@/components/customer/CustomerForm';
+import CustomerTable from '@/components/customer/CustomerTable';
 
 
 const CustomerPage = () => {

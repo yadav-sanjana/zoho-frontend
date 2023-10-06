@@ -3,6 +3,8 @@ import axios from 'axios';
 import { X } from 'lucide-react';
 import ItemTable from './ItemTable';
 import ItemForm from './ItemForm';
+import CartForm from './CartForm';
+import UpdateItemForm from './UpdateItemForm';
 
 interface TermType {
     id: number;
@@ -40,6 +42,26 @@ interface CustomerType {
     createdAt: string;
     updatedAt: string;
 }
+interface ItemType {
+    id: number;
+    customer_id: number;
+    discount: number;
+    tax: number;
+    total_amount: number;
+    payableAmount: number;
+    cart_details?: {
+        id: number;
+        cart_id: number;
+        item: string;
+        quantity: number;
+        rate: number;
+        amount: number;
+        createdAt: string;
+        updatedAt: string;
+    }[]
+
+}
+
 interface InvoiceFormProps {
     showForm: boolean;
     setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,10 +69,11 @@ interface InvoiceFormProps {
 
 
 const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
-    const [itemModel, openItemModel] = useState<boolean>(false)
+
+    const [customer_id, setCustomer_id] = useState<number>(0);
 
     const [formData, setFormData] = useState({
-        customer: null,
+        customer: '' || 5,
         invoice_no: '',
         order_no: '',
         invoice_date: '',
@@ -59,6 +82,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
         subject: '',
         customer_notes: '',
         ATC: '',
+        payableAmount: 0,
         file: 'default',
         status: 'active',
         created_by: '',
@@ -130,12 +154,38 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
         fetchData();
     }, []);
 
+    //cart
+    const [itemData, setItemData] = useState<[ItemType] | null | undefined>();
+    useEffect(() => {
+
+        fetchItemData();
+    }, []);
+
+    const fetchItemData = async () => {
+        try {
+            const itemResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/item/${customer_id}`);
+            if (!itemResponse.data) {
+                throw new Error('Network response was not ok');
+            }
+            console.log(itemResponse.data, customer_id, "asfvghv,h");
+
+            setItemData(itemResponse.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+
+        }
+    }
+
     const handleDropdownChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
+
+        setCustomer_id(formData.customer)
+        console.log(customer_id, "customer id clicked");
+        fetchItemData()
     };
 
     const handleSubmit = async (e) => {
@@ -159,6 +209,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -191,25 +242,13 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                         <form onSubmit={handleSubmit} className="mx-auto p-4 bg-white shadow-md rounded-md">
                             <div className="mb-4 flex">
                                 <label className="block text-gray-600 text-sm w-1/3">Customer</label>
-                                <select id="customer" name="customer" className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleDropdownChange}>
+                                <select id="customer" name="customer" className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleDropdownChange}>
                                     {customer.map((val) => (
                                         <option key={val.id} value={val.id}>
                                             {val.firstname}
                                         </option>
                                     ))}
                                 </select>
-                            </div>
-                            <button
-                                className="text-white bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button"
-                                onClick={() => openItemModel}
-
-                            >
-                                add item
-                            </button>
-                            <div className='w-full p-10'>
-                                <ItemTable />
-                                <ItemForm/>
                             </div>
                             <div className="mb-4 flex">
                                 <label className="block text-gray-600 text-sm w-1/3">Invoice no.</label>
@@ -218,7 +257,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                     name="invoice_no"
                                     value={formData.invoice_no}
                                     onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                    className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                     required
                                 />
                             </div>
@@ -229,7 +268,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                     name="order_no"
                                     value={formData.order_no}
                                     onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                    className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                     required
                                 />
                             </div>
@@ -240,11 +279,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                     name="invoice_date"
                                     value={formData.invoice_date}
                                     onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                    className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                     required
                                 />
                             </div>
-                            <div className='mb-4 flex w-2/3'>
+                            <div className='mb-4 flex'>
                                 <div className='w-full flex'>
                                     <label className="block text-gray-600 text-sm w-1/3">Terms</label>
                                     <select id="sales_person" name="terms" className="w-1/2 mx-0 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleDropdownChange}>
@@ -255,7 +294,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                         ))}
                                     </select>
                                 </div>
-                                <div className='w-full flex'>
+                                {/* <div className='w-full flex'>
                                     <label className="block text-gray-600 ml-10 text-sm w-1/2">due_date</label>
                                     <input
                                         type="text"
@@ -263,11 +302,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                         onChange={handleChange}
                                         className="p-1 border border-neutral-400 w-1/2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                     />
-                                </div>
+                                </div> */}
                             </div>
                             <div className="mb-4 flex">
                                 <label className="block text-gray-600 text-sm w-1/3">sales_person</label>
-                                <select id="sales_person" className="p-1 border border-neutral-400 w-1/3 rounded-md focus:outline-none focus:ring focus:border-blue-300" name="sales_person" required onChange={handleDropdownChange}>
+                                <select id="sales_person" className="p-1 border border-neutral-400 w-2/3 rounded-md focus:outline-none focus:ring focus:border-blue-300" name="sales_person" required onChange={handleDropdownChange}>
                                     {value.map((val) => (
                                         <option key={val.id} value={val.id}>
                                             {val.name}
@@ -281,30 +320,44 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                    className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                     required
                                 />
                             </div>
+
+                            <div className='mb-4'> <ItemTable cart={itemData} />
+                                <ItemForm customer_id={customer_id} /></div>
+                                <div>
+                                {/* <UpdateItemForm item_id={item_id}/> */}
+                                </div>
                             <div className="mb-4 flex">
-                                <label className="block text-gray-600 text-sm w-1/3">customer_notes</label>
-                                <textarea
-                                    name="customer_notes"
-                                    value={formData.customer_notes}
-                                    onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                    required
-                                />
+                                <div className='w-1/2 pr-2'>
+                                    <div className="mb-4 flex">
+                                        <label className="block text-gray-600 text-sm w-1/3">customer_notes</label>
+                                        <textarea
+                                            name="customer_notes"
+                                            value={formData.customer_notes}
+                                            onChange={handleChange}
+                                            className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                        />
+                                    </div>
+                                    <div className="mb-4 flex">
+                                        <label className="block text-gray-600 text-sm w-1/3">ATC</label>
+                                        <textarea
+                                            name="ATC"
+                                            value={formData.ATC}
+                                            onChange={handleChange}
+                                            className="w-2/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className='w-1/2 pr-1'>
+
+                                    <CartForm cart={itemData} />
+                                </div>
                             </div>
-                            <div className="mb-4 flex">
-                                <label className="block text-gray-600 text-sm w-1/3">ATC</label>
-                                <textarea
-                                    name="ATC"
-                                    value={formData.ATC}
-                                    onChange={handleChange}
-                                    className="w-1/3 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                    required
-                                />
-                            </div>
+
 
                             {/* Modal footer */}
                             <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
