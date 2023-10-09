@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { EyeIcon, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
+import { InvoiceDetail } from './InvoiceDetail';
 
 interface InvoiceType {
     id: number;
@@ -15,7 +16,7 @@ interface InvoiceType {
     customer_notes: string;
     ATC: string;
     file: string;
-    amount : number;
+    amount: number;
     status: string;
     created_by: number;
     updated_by?: null;
@@ -25,7 +26,7 @@ interface InvoiceType {
     as_sales_person: AsSalesPerson;
     as_terms: AsTerms;
 }
-export interface AsCustomer {
+interface AsCustomer {
     id: number;
     customerType: string;
     contactPerson: string;
@@ -43,12 +44,12 @@ export interface AsCustomer {
     createdAt: string;
     updatedAt: string;
 }
-export interface AsSalesPerson {
+interface AsSalesPerson {
     id: number;
     email: string;
     name: string;
 }
-export interface AsTerms {
+interface AsTerms {
     id: number;
     term: string;
     days: number;
@@ -69,6 +70,17 @@ const InvoiceTable = () => {
 
         fetchData();
     }, []);
+
+    const [invoiceShowDetail, setInvoiceShowDetail] = useState(false)
+    const [invoiceId, setInvoiceId] = useState(null)
+
+    const handleDetailClick = (id) => {
+        setInvoiceId(id)
+        setInvoiceShowDetail(true)
+
+        console.log(invoiceId);
+        
+    }
 
     return (
         <>
@@ -121,14 +133,11 @@ const InvoiceTable = () => {
                                 <td className="px-6 py-4">{item.due_date}</td>
                                 <td className="px-6 py-4">{item.amount}</td>
                                 <td className="px-6 py-4">123</td>
-                                <td className="px-6 py-4">
-                                    <a
-                                        href="#"
-                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                    >
-                                        <EyeIcon />
-                                    </a>
-                                </td>
+                                <button className="px-6 py-4" onClick={() => handleDetailClick(item.id)}>
+                                    {invoiceShowDetail ? (
+                                        <InvoiceDetail id={invoiceId} />
+                                    ) : null}
+                                </button>
                             </tr>
                         ))}
                     </tbody>
