@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { EyeIcon, Plus } from 'lucide-react';
+import { Eye, EyeIcon, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { InvoiceDetail } from './InvoiceDetail';
 
@@ -79,7 +79,7 @@ const InvoiceTable = () => {
         setInvoiceShowDetail(true)
 
         console.log(invoiceId);
-        
+
     }
 
     return (
@@ -133,7 +133,7 @@ const InvoiceTable = () => {
                                 <td className="px-6 py-4">{item.due_date}</td>
                                 <td className="px-6 py-4">{item.amount}</td>
                                 <td className="px-6 py-4">123</td>
-                                <button className="px-6 py-4" onClick={() => handleDetailClick(item.id)}>
+                                <button className="px-6 py-4" onClick={() => handleDetailClick(item.id)}><Eye />
                                     {invoiceShowDetail ? (
                                         <InvoiceDetail id={invoiceId} />
                                     ) : null}

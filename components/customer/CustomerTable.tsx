@@ -83,7 +83,7 @@ const CustomerTable = () => {
                                 <td className="px-6 py-4">{data.contactPerson}</td>
                                 <td className="px-6 py-4">{data.customer_email}</td>
                                 <td className="px-6 py-4">{data.work_phone}</td>
-                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}>
+                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}><Eye/>
                                 {showCustomerDetail ? (
                                     <CustomerDetail id={selectedCustomerId}/>
                                 ) : null}
