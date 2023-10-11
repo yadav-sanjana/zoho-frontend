@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import ItemTable from './ItemTable';
@@ -156,12 +156,8 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
 
     //cart
     const [itemData, setItemData] = useState<[ItemType] | null | undefined>();
-    useEffect(() => {
 
-        fetchItemData();
-    }, []);
-
-    const fetchItemData = async () => {
+    const fetchItemData = useCallback(async () => {
         try {
             const itemResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/item/${customer_id}`);
             if (!itemResponse.data) {
@@ -174,7 +170,12 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
             console.error('Error fetching data:', error);
 
         }
-    }
+    }, [customer_id])
+
+    useEffect(() => {
+
+        fetchItemData();
+    }, [fetchItemData]);
 
     const handleDropdownChange = (e) => {
         const { name, value } = e.target;
@@ -327,9 +328,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ showForm, setShowForm }) => {
 
                             <div className='mb-4'> <ItemTable cart={itemData} />
                                 <ItemForm customer_id={customer_id} /></div>
-                                <div>
+                            <div>
                                 {/* <UpdateItemForm item_id={item_id}/> */}
-                                </div>
+                            </div>
                             <div className="mb-4 flex">
                                 <div className='w-1/2 pr-2'>
                                     <div className="mb-4 flex">

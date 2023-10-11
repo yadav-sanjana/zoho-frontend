@@ -53,7 +53,7 @@ const CartForm = ({ cart }: { cart: [ItemType] | null | undefined }) => {
                 payableAmount: null
             })
         }
-    }, [propDetail]|| null);
+    }, [propDetail]);
     console.log(cart_id, cartData);
 
     const handleSubmit = async (e) => {

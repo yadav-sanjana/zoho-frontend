@@ -1,18 +1,14 @@
 import axios from 'axios';
 import { X } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 
 const UpdateItemForm = ({ setUpdateItemModal, item_id }) => {
 
     //itemDetail
-    const [itemDetail, setItemDetail] = useState<any>();
-    useEffect(() => {
+    const [itemDetail, setItemDetail] = useState<any>()
 
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const itemResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/cart-item/${item_id}`);
             if (!itemResponse.data) {
@@ -22,12 +18,17 @@ const UpdateItemForm = ({ setUpdateItemModal, item_id }) => {
             setItemDetail(itemResponse.data);
 
             console.log(itemResponse.data);
-            
+
 
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
+    }, [item_id]);
+
+    useEffect(() => {
+
+        fetchData();
+    }, [item_id, fetchData]);
 
     const [UpdateData, setUpdateData] = useState({
         item: '',

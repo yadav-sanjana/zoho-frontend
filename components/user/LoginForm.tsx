@@ -4,9 +4,9 @@ import '../../app/(dashboard)/(routes)/dashboard/page'
 import { LogIn, LogInIcon, Warehouse } from 'lucide-react';
 
 const LoginForm: React.FC = (isOpen, onClose) => {
-  if (!isOpen) return null;
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -60,7 +60,7 @@ const LoginForm: React.FC = (isOpen, onClose) => {
                 type="string"
                 id=""
                 className="w-full px-4 py-2 rounded-md border-black-700 focus:ring focus:ring-blue-200"
-              
+
               />
             </div>
             <div>

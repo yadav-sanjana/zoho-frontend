@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card'
 import axios from 'axios';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
@@ -27,22 +27,19 @@ interface CustomerType {
 const CustomerDetail = ({ id }) => {
     const [customer, setCustomer] = useState<CustomerType>();
 
-    useEffect(() => {
-        fetchData(id);
-    }, [id]);
-
-    const fetchData = async (id) => {
+    const fetchData = useCallback(async (id) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${id}`);
             setCustomer(response.data);
-            console.log(response.data);
-
-            console.log(customer);
 
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchData(id);
+    }, [id, fetchData]);
 
     return (
         <>
