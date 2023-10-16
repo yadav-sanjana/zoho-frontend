@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "../ui/card";
-import { InvoicePdf } from './InvoicePdf'
+import HTMLInvoiceTemplate from './InvoicePdf'
 import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, Sheet } from "../ui/sheet";
 import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { Button } from "../ui/button";
+import logo from '../../public/logo.jpeg'
+import { Files } from "lucide-react";
 
 export interface InvoiceType {
     id: number;
@@ -81,6 +83,9 @@ export interface CartDetailsEntity {
 
 export const InvoiceDetail = ({ id }) => {
     const [invoice, setInvoice] = useState<InvoiceType>()
+    const [logoo, setLogoo] = useState<any>()
+    console.log(invoice, "invoice detals from invoice detail");
+
 
     useEffect(() => {
         fetchData(id)
@@ -91,6 +96,7 @@ export const InvoiceDetail = ({ id }) => {
 
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/invoice/${id}`)
             setInvoice(response.data.invoice)
+            setLogoo(logo)
 
             console.log(response.data.invoice);
 
@@ -111,21 +117,22 @@ export const InvoiceDetail = ({ id }) => {
         field: {
             marginBottom: 8,
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'row',
+            alignItems: 'center',
         },
         fieldLabel: {
             fontWeight: 'bold',
-            fontSize: 12
+            fontSize: 12,
+            width: '30%',
         },
         fieldValue: {
-            fontWeight: 'thin',
-            fontSize: 12
+            fontSize: 12,
+            width: '70%',
         },
         table: {
-            // display: 'table',
             width: '100%',
-            borderCollapse: 'collapse',
             marginBottom: 10,
+            borderCollapse: 'collapse'
         },
         tableRow: {
             flexDirection: 'row',
@@ -134,135 +141,129 @@ export const InvoiceDetail = ({ id }) => {
             alignItems: 'center',
             height: 24,
         },
-        tableCell: {
-            flex: 1,
-            padding: 4,
-            textAlign: 'center',
-        },
+
         headerCell: {
             backgroundColor: '#CCCCCC',
             fontWeight: 'bold',
         },
+        container: {
+            display: 'flex',
+            flexDirection: 'row',
+            padding: 3,
+            margin: 14,
+        },
+        logo: {
+            width: 24,
+            height: 16,
+            margin: 4,
+        },
+        imageContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
     });
 
-    const MyDocument = () => (
+    const HTMLInvoiceTemplate = () => (
         <Document>
             <Page size="A4" style={styles.page}>
                 <View style={styles.section}>
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Company:</Text>
-                            <Text style={styles.fieldValue}>{invoice.as_customer?.company}</Text>
-                        </View>
-                    ) : null}
+                    <Text style={{ fontSize: 18, marginBottom: 10 , textAlign: 'center'}}>Invoice</Text>
+                    
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Company:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.as_customer?.company}</Text>
+                    </View>
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Invoice Number:</Text>
-                            <Text style={styles.fieldValue}>{invoice.invoice_no}</Text>
-                        </View>
-                    ) : null}
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Invoice Number:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.invoice_no}</Text>
+                    </View>
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Order Number: </Text>
-                            <Text style={styles.fieldValue}>{invoice.order_no}</Text>
-                        </View>
-                    ) : null}
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Order Number:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.order_no}</Text>
+                    </View>
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Invoice Date : </Text>
-                            <Text style={styles.fieldValue}>{invoice.invoice_date}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Terms:</Text>
-                            <Text style={styles.fieldLabel}>Days:</Text>
-                            <Text style={styles.fieldValue}>{invoice.as_terms.days}</Text>
-                            <Text style={styles.fieldLabel}>Term:</Text>
-                            <Text style={styles.fieldValue}>{invoice.as_terms.term}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Sales person:</Text>
-                            <Text style={styles.fieldValue}>{invoice.as_sales_person.name}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Subject:</Text>
-                            <Text style={styles.fieldValue}>{invoice.subject}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Customer Notes:</Text>
-                            <Text style={styles.fieldValue}>{invoice.customer_notes}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>ATC:</Text>
-                            <Text style={styles.fieldValue}>{invoice.ATC}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>File:</Text>
-                            <Text style={styles.fieldValue}>{invoice.file}</Text>
-                        </View>
-                    ) : null}
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Amount:</Text>
-                            <Text style={styles.fieldValue}>{invoice.invoice_no}</Text>
-                        </View>
-                    ) : null}
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Invoice Date:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.invoice_date}</Text>
+                    </View>
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Balance:</Text>
-                            <Text style={styles.fieldValue}>{invoice.invoice_no}</Text>
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Terms:</Text>
+                        <Text style={styles.fieldValue}>Days: {invoice?.as_terms?.days}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Term:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.as_terms?.term}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Sales person:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.as_sales_person?.name}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Subject:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.subject}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Customer Notes:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.customer_notes}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>ATC:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.ATC}</Text>
+                    </View>
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>File:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.file}</Text>
+                    </View>
+
+
+                    <View style={styles.field}>
+                        <Text style={styles.fieldLabel}>Status:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.status}</Text>
+                    </View>
+
+                    <Text style={{ fontSize: 16, marginTop: 20, marginBottom: 10 }}>Item List:</Text>
+
+                    <View style={styles.tableRow}>
+                        <Text style={styles.fieldLabel}>ID</Text>
+                        <Text style={styles.fieldLabel}>Item</Text>
+                        <Text style={styles.fieldLabel}>Quantity</Text>
+                        <Text style={styles.fieldLabel}>Rate</Text>
+                        <Text style={styles.fieldLabel}>Amount</Text>
+                    </View>
+
+                    {invoice?.invoice_cart?.cart_details?.map((item, index) => (
+                        <View style={styles.tableRow} key={index}>
+                            <Text style={styles.fieldValue}>{item.id}</Text>
+                            <Text style={styles.fieldValue}>{item.item}</Text>
+                            <Text style={styles.fieldValue}>{item.quantity}</Text>
+                            <Text style={styles.fieldValue}>{item.rate}</Text>
+                            <Text style={styles.fieldValue}>{item.amount}</Text>
                         </View>
-                    ) : null}
+                    ))}
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Status:</Text>
-                            <Text style={styles.fieldValue}>{invoice.invoice_no}</Text>
-                        </View>
-                    ) : null}
+                    <View style={styles.field}>
+                        <Text style={{ fontSize: 14, marginBottom: 10, textAlign: 'right' }}>Amount:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.amount}</Text>
+                    </View>
 
-                    {invoice ? (
-                        <View style={styles.field}>
-                            <Text style={styles.fieldLabel}>Item List:</Text>
-                            <View style={styles.tableRow}>
-                                <Text style={[styles.tableCell]}>Item Name</Text>
-                                <Text style={[styles.tableCell]}>Rate</Text>
-                                <Text style={[styles.tableCell]}>Quantity</Text>
-                                <Text style={[styles.tableCell]}>Total</Text>
-                            </View>
-
-                            {/* Table Data */}
-                            {invoice.invoice_cart.cart_details ? <>
-                                {invoice.invoice_cart.cart_details.map((item, index) => (
-                                    <View style={styles.tableRow} key={index}>
-                                        <Text style={[styles.tableCell]}>{item.item}</Text>
-                                        <Text style={[styles.tableCell]}>{item.rate}</Text>
-                                        <Text style={[styles.tableCell]}>{item.quantity}</Text>
-                                        <Text style={[styles.tableCell]}>{item.amount}</Text>
-                                    </View>
-                                ))}</> : <></>}
-
-                        </View>
-                    ) : null}
+                    <View style={styles.field}>
+                        <Text style={{ fontSize: 14, marginBottom: 10, textAlign: 'right' }}>Balance:</Text>
+                        <Text style={styles.fieldValue}>{invoice?.balance}</Text>
+                    </View>
 
                 </View>
             </Page>
-        </Document >
+        </Document>
     );
 
 
@@ -304,7 +305,7 @@ export const InvoiceDetail = ({ id }) => {
                                                             <p><strong>Balance</strong> : {invoice.balance}</p>
                                                             <p><strong>Status</strong>: {invoice.status}</p>
                                                         </div></>
-                                                    <PDFDownloadLink document={<MyDocument />} fileName="invoice.pdf">
+                                                    <PDFDownloadLink document={<HTMLInvoiceTemplate />} fileName="invoice.pdf">
                                                         {({ blob, url, loading, error }) =>
                                                             loading ? 'Loading document...' : <><Button>Download</Button></>
                                                         }

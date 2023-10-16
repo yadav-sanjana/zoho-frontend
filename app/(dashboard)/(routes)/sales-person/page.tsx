@@ -1,6 +1,6 @@
 'use client';
-import SalesPersonForm from '@/components/SalesPersonForm';
-import SalesPersonTable from '@/components/SalesPersonTable';
+import SalesPersonForm from '@/components/sales_person/SalesPersonForm';
+import SalesPersonTable from '@/components/sales_person/SalesPersonTable';
 
 const SalePerson = () => {
   return (

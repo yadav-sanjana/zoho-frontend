@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../app/(dashboard)/(routes)/dashboard/page'
-import { LogIn, LogInIcon, Warehouse } from 'lucide-react';
+import { Warehouse } from 'lucide-react';
 
 const LoginForm: React.FC = (isOpen, onClose) => {
 
