@@ -51,7 +51,7 @@ const CustomerUpdateForm = ({ customer_id }) => {
         e.preventDefault();
 
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/customer`, formData);
+            await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${customer_id}`, formData);
             console.log('Data sent successfully!');
         } catch (error) {
             console.error('Error sending data:', error);
