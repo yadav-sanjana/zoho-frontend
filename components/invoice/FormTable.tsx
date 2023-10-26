@@ -154,7 +154,7 @@ const FormTable = (updateTableData) => {
                         })
                     }
 
-                    <button onClick={addRow} type='button' className='my-3 flex items-center space-x-2 text-purple-600 font-bold'>
+                    <button onClick={addRow} type='button' className='my-3 flex items-center space-x-2 text-blue-600 font-bold'>
                         <AiOutlinePlusCircle className='text-base' />
                         <span>Add line item</span>
                     </button>

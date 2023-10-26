@@ -4,15 +4,19 @@ import { X } from 'lucide-react';
 
 const SalesPersonForm = () => {
     const [showModal, setShowModal] = React.useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: ''
-    });
+    const [personData, setPersonData] = useState({
+        name: "",
+        emp_id: "",
+        email: "",
+        contact_number: "",
+        role: ""
+
+    })
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person`, formData, {
+            await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person`, personData, {
                 headers: {
                     'Authorization': localStorage.getItem('token')
                 }
@@ -23,15 +27,15 @@ const SalesPersonForm = () => {
         }
         setShowModal(false)
 
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
     }
+    const handleInputChange = (e: { target: { name: any; value: any } }) => {
+        const { name, value } = e.target
+        setPersonData({
+            ...personData,
+            [name]: value
+        })
+    }
+
 
     return (
         <>
@@ -70,27 +74,35 @@ const SalesPersonForm = () => {
                                         {/* Modal body */}
                                         <div className="p-6 space-y-6">
                                             <form onSubmit={handleSubmit} className="mx-auto p-4 bg-white shadow-md rounded-md">
-                                                <div className="mb-4 flex">
-                                                    <label className="block text-gray-600 text-sm w-80">Name</label>
-                                                    <input
-                                                        type="text"
-                                                        name="name"
-                                                        value={formData.name}
-                                                        onChange={handleChange}
-                                                        className="w-96 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div className="mb-4 flex">
-                                                    <label className="block text-gray-600 text-sm w-80">Email</label>
-                                                    <input
-                                                        type="text"
-                                                        name="email"
-                                                        value={formData.email}
-                                                        onChange={handleChange}
-                                                        className="w-96 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        required
-                                                    />
+                                                <div className="flex flex-col w-full mt-6 space-x-2 items-between">
+                                                    <div className="flex">
+
+                                                    </div>
+                                                    <div className="flex items-center">
+                                                        <label className="block text-gray-600 text-sm w-full">Name : </label>
+                                                        <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Sales Person Name' name='name' onChange={handleInputChange} value={personData.name} />
+                                                    </div>
+
+                                                    <div className="flex items-center">
+                                                        <label className="block text-gray-600 text-sm w-full">ID : </label>
+                                                        <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Employee ID' name='emp_id' onChange={handleInputChange} value={personData.emp_id} />
+                                                    </div>
+
+                                                    <div className="flex items-center">
+
+                                                        <label className="block text-gray-600 text-sm w-full">Email : </label>
+                                                        <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder="salesperson@hysus.com" name='companyAddress' onChange={handleInputChange} value={personData.email} />
+                                                    </div>
+
+                                                    <div className="flex items-center">
+                                                        <label className="block text-gray-600 text-sm w-full">Contact : </label>
+                                                        <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder='+91 1111111111' name='contact_number' onChange={handleInputChange} value={personData.contact_number} />
+                                                    </div>
+
+                                                    <div className="flex items-center">
+                                                        <label className="block text-gray-600 text-sm w-full">Role : </label>
+                                                        <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder='Role' name='role' onChange={handleInputChange} value={personData.role} />
+                                                    </div>
                                                 </div>
 
                                                 {/* Modal footer */}

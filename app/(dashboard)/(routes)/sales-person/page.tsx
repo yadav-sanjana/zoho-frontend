@@ -5,9 +5,10 @@ import SalesPersonTable from '@/components/sales_person/SalesPersonTable';
 const SalePerson = () => {
   return (
     <div>
-      <SalesPersonForm/>
+
+      <SalesPersonForm />
       <div className='p-10'>
-      <SalesPersonTable/>
+        <SalesPersonTable />
       </div>
     </div>
   );

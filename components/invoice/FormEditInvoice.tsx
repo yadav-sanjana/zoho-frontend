@@ -92,7 +92,7 @@ const FormEditInvoice = () => {
 
                 </div>
             </div>
-            <button className='bg-purple-600 py-3 px-6 text-white' type='submit'>Submit</button>
+            <button className='bg-blue-600 py-3 px-6 text-white' type='submit'>Submit</button>
         </form>
     )
 }

@@ -36,7 +36,6 @@ const InvoicePage = () => {
             ...formData,
             [name]: value
         })
-        console.log(formData, "befor submit");
     }
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
@@ -88,7 +87,7 @@ const InvoicePage = () => {
                         <AiOutlineCloudUpload />
                         <span>Save online</span>
                     </button>
-                    <button className='flex items-center text-purple-600 font-semibold space-x-2 px-3 py-2 rounded-sm border border-purple-600'>
+                    <button className='flex items-center text-blue-600 font-semibold space-x-2 px-3 py-2 rounded-sm border border-blue-600'>
                         <CiMail />
                         <span>Send</span>
                     </button>
@@ -160,7 +159,7 @@ const InvoicePage = () => {
                         {/* table */}
                         <FormTable updateTableData={updateTableData} />
 
-                        <button className='bg-purple-600 py-3 px-6 text-white' type='submit'>Create</button>
+                        <button className='bg-blue-600 py-3 px-6 text-white' type='submit'>Create</button>
                     </form>
                 )
             }
