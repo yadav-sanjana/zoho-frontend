@@ -1,84 +1,154 @@
-import React from 'react';
-import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { InvoiceDetail } from './InvoiceDetail';
-import { Button } from '../ui/button';
+import React from "react";
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
     page: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         backgroundColor: '#E4E4E4',
     },
     section: {
         margin: 10,
-        padding: 10,
-        flexGrow: 1,
+        padding: 5,
+    },
+    field: {
+        marginBottom: 8,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    fieldLabel: {
+        fontWeight: 'bold',
+        fontSize: 12
+    },
+    fieldValue: {
+        fontWeight: 'thin',
+        fontSize: 12
+    },
+    table: {
+        width: '100%',
+        borderCollapse: 'collapse',
+        marginBottom: 10,
+    },
+    tableRow: {
+        flexDirection: 'row',
+        borderBottomColor: '#000',
+        borderBottomWidth: 1,
+        alignItems: 'center',
+        height: 24,
+    },
+    tableCell: {
+        flex: 1,
+        padding: 4,
+        textAlign: 'center',
+    },
+    headerCell: {
+        backgroundColor: '#CCCCCC',
+        fontWeight: 'bold',
     },
 });
 
-// Define your PDF content
-const MyDocument = () => (
+const HTMLInvoiceTemplate = ({ invoice }) => (
+
+
     <Document>
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
-                <Text>Invoice Details</Text>
-                <div>
-                    <h2>Invoice for Acme Inc.</h2>
-                    <p>Date: September 30, 2023</p>
 
-                    <h3>Bill To:</h3>
-                    <p>John Doe</p>
-                    <p>123 Main Street</p>
-                    <p>City, State, ZIP</p>
-                    <p>Email: john.doe@example.com</p>
 
-                    <h3>Invoice Items:</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Product A</td>
-                                <td>2</td>
-                                <td>$50.00</td>
-                                <td>$100.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
 
-                    <p>Subtotal: $100.00</p>
-                    <p>Tax (10%): $10.00</p>
-                    <p>Total Amount Due: $110.00</p>
+                {invoice && (
+                    <>
+                        console.log({invoice});
+                        <body>
+                            <h2>Invoice</h2>
 
-                    <h3>Payment Instructions:</h3>
-                    <p>Please make checks payable to Acme Inc.</p>
-                    <p>Payment is due within 30 days of the invoice date.</p>
+                            <table>
+                                <tr>
+                                    <th>Company:</th>
+                                    <td>{invoice}</td>
+                                </tr>
+                                <tr>
+                                    <th>Invoice Number:</th>
+                                    <td>12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Order Number:</th>
+                                    <td>54321</td>
+                                </tr>
+                                <tr>
+                                    <th>Invoice Date:</th>
+                                    <td>2023-10-16</td>
+                                </tr>
+                                <tr>
+                                    <th>Terms:</th>
+                                    <td>Days: 30</td>
+                                </tr>
+                                <tr>
+                                    <th>Term:</th>
+                                    <td>Net 30</td>
+                                </tr>
+                                <tr>
+                                    <th>Sales person:</th>
+                                    <td>Sales Person Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Subject:</th>
+                                    <td>Invoice Subject</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer Notes:</th>
+                                    <td>Customer's Notes or Comments</td>
+                                </tr>
+                                <tr>
+                                    <th>ATC:</th>
+                                    <td>ATC Code</td>
+                                </tr>
+                                <tr>
+                                    <th>File:</th>
+                                    <td>Attachment File Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount:</th>
+                                    <td>Subtotal Amount</td>
+                                </tr>
+                                <tr>
+                                    <th>Balance:</th>
+                                    <td>Balance Amount</td>
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td>Payment Status</td>
+                                </tr>
+                            </table>
 
-                    <h4>Thank you for your business!</h4>
-                    <p>Contact us at support@acme.com for any inquiries.</p>
-                </div>
+                            <h3>Item List</h3>
 
+                            <table>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cart ID</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>Item Name</td>
+                                    <td>1</td>
+                                    <td>$0.00</td>
+                                    <td>$0.00</td>
+                                </tr>
+
+                            </table>
+                        </body>
+                    </>
+                )}
             </View>
         </Page>
-    </Document>
-);
+    </Document >
 
-export const InvoicePdf = ({ clickButton, invoice_detail }) => {
-    return (
-        <div>
-            <> <h1>Invoice Details</h1>
-                <> {invoice_detail}</>
-                <PDFDownloadLink document={<MyDocument />} fileName="invoice.pdf">
-                    {({ blob, url, loading, error }) =>
-                        loading ? 'Loading document...' : <><Button>Download</Button></>
-                    }
-                </PDFDownloadLink></>
-        </div>
-    );
-};
+)
 
+
+export default HTMLInvoiceTemplate;

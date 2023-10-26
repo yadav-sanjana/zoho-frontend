@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card'
 import axios from 'axios';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import { EyeIcon } from 'lucide-react';
@@ -44,7 +43,7 @@ const CustomerDetail = ({ id }) => {
     return (
         <>
             <Sheet>
-                <SheetTrigger><EyeIcon /></SheetTrigger>
+                <SheetTrigger>View</SheetTrigger>
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle>Customer Details</SheetTitle>

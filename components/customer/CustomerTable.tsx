@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { Eye } from 'lucide-react';
+import { Edit, Eye } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import CustomerDetail from './CustomerDetail';
+import CustomerUpdateForm from './CustomerUpdateForm';
 
 interface CustomerType {
     id: number;
@@ -21,6 +22,7 @@ interface CustomerType {
 const CustomerTable = () => {
     const [data, setData] = useState<CustomerType[]>([]);
     const [showCustomerDetail, setShowCustomerDetail] = useState(false);
+    const [showCustomerUpdateForm, setShowCustomerUpdateForm] = useState(false);
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
     const handleCustomerDetailClick = (customerId) => {
@@ -29,6 +31,11 @@ const CustomerTable = () => {
 
         console.log(customerId);
 
+    };
+
+    const handleCustomerUpdateClick = (customerId) => {
+        setSelectedCustomerId(customerId);
+        setShowCustomerUpdateForm(true);
     };
 
     useEffect(() => {
@@ -83,12 +90,20 @@ const CustomerTable = () => {
                                 <td className="px-6 py-4">{data.contactPerson}</td>
                                 <td className="px-6 py-4">{data.customer_email}</td>
                                 <td className="px-6 py-4">{data.work_phone}</td>
-                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}><Eye/>
-                                {showCustomerDetail ? (
-                                    <CustomerDetail id={selectedCustomerId}/>
-                                ) : null}
+
+                                {/* view */}
+                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}><Eye />
+                                    {showCustomerDetail ? (
+                                        <CustomerDetail id={selectedCustomerId} />
+                                    ) : null}
                                 </button>
-                                
+
+                                {/* edit */}
+                                <button className="px-6 py-4" onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
+                                    {showCustomerUpdateForm ? (
+                                        <CustomerUpdateForm customer_id={selectedCustomerId} />
+                                    ) : null}
+                                </button>
                                 <td className="px-6 py-4">
                                     <a
                                         href="#"
