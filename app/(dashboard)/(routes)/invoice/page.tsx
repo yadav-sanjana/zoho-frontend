@@ -1,7 +1,7 @@
 'use client';
 import InvoiceForm from '@/components/invoice/InvoiceForm';
 import InvoiceTable from '@/components/invoice/InvoiceTable';
-import { Plus } from 'lucide-react';
+// import { Plus } from 'lucide-react'
 import { useState } from 'react';
 
 const InvoicePage = () => {
@@ -16,7 +16,7 @@ const InvoicePage = () => {
         type="button"
         onClick={changeState}
       >
-        <Plus className="h-6 w-5 mr-3" />Add Invoice
+        <div className="h-6 w-5 mr-3" /> + Add Invoice
       </button>
       {showForm ? <InvoiceForm showForm={showForm} setShowForm={setShowForm}/> : <InvoiceTable />}
     </>
