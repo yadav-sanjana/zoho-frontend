@@ -1,8 +1,8 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Airplay, ArrowRight, FileStack, UserCheck, Users2 } from "lucide-react";
+// import { cn } from "@/lib/utils";
+import { Airplay, ArrowRight, FileStack } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const task = [
@@ -15,7 +15,7 @@ const task = [
   },
   {
     label: "Sale Person",
-    icon: UserCheck,
+    icon: FileStack,
     href: '/sales-person',
     color: 'text-pink-500'
   },
@@ -45,8 +45,8 @@ const Dashboard = () => {
             key={val.href}
             className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer">
             <div className="flex items-center gap-x-4">
-              <div className={cn("p-2 w-fit rounded-md", val.bgcolor)}>
-                <val.icon className={cn("w-8 h-8", val.color)} />
+              <div className={"p-2 w-fit rounded-md"}>
+                <val.icon className={"w-8 h-8"} />
               </div>
               <div className="font-semibold">
                 {val.label}

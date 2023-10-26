@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../app/(dashboard)/(routes)/dashboard/page'
-import { Warehouse } from 'lucide-react';
+import { FileStack } from 'lucide-react';
 
 const LoginForm: React.FC = (isOpen, onClose) => {
 
@@ -36,7 +36,7 @@ const LoginForm: React.FC = (isOpen, onClose) => {
         <div className="fixed inset-0 bg-black opacity-50"></div>
         <div className="z-50 bg-white p-4 rounded-md shadow-md w-96">
           <div className='flex justify-center'>
-            <Warehouse className='h-9 w-8 mr-4' />
+            <FileStack className='h-9 w-8 mr-4' />
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
