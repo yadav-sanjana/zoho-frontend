@@ -1,6 +1,6 @@
 'use client';
 
-import { AlignJustify } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { Button } from './ui/button'
 import {
     Sheet,
@@ -14,7 +14,7 @@ const MobileSideBar = () => {
         <Sheet>
             <SheetTrigger>
                 <Button variant="ghost" size='icon' className='md:hidden'>
-                    <AlignJustify />
+                    <Menu />
                 </Button>
             </SheetTrigger>
             <SheetContent side='left' className='p-0'>
