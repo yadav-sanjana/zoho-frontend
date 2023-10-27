@@ -69,7 +69,7 @@ const SalesPersonForm = () => {
                                     </button>
                                 </div>
                                 {/*body*/}
-                                <div>
+                                {/* <div> */}
                                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                         {/* Modal body */}
                                         <div className="p-6 space-y-6">
@@ -123,7 +123,7 @@ const SalesPersonForm = () => {
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
+                                    {/* </div> */}
                                 </div>
                             </div>
                         </div>

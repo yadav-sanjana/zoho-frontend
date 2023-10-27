@@ -2,21 +2,49 @@
 import FormEditInvoice from '@/components/invoice/FormEditInvoice'
 import FormPreview from '@/components/invoice/FormPreview'
 import FormTable from '@/components/invoice/FormTable'
-import { CldUploadButton } from 'next-cloudinary'
-import React, { useState } from 'react'
+import axios from 'axios'
+import { CldImage, CldUploadButton } from 'next-cloudinary'
+import React, { useEffect, useState } from 'react'
 import { AiFillEye, AiFillPrinter, AiOutlineCloudUpload, AiOutlineDownload, AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import { CiMail } from 'react-icons/ci'
 
-const InvoicePage = () => {
+const InvoicePage = ({
+    companyName,
+    userName,
+    companyAddress,
+    companyCity,
+    companyCountry
+}) => {
+
+    const [userInfo, setUserInfo] = useState<any>(null)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token')
+            const decodeToken = parseJwt(token)
+            console.log(decodeToken);
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${decodeToken?.email}`);
+                setUserInfo(response.data);
+
+                console.log(response.data);
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
     const [preview, setPreview] = useState(false)
     const [logoUrl, setLogoUrl] = useState("")
 
     const [formData, setFormData] = useState({
-        companyName: "",
-        invoiceAuthor: "",
-        companyAddress: "",
-        companyCity: "",
-        companyCountry: "",
+        companyName: userInfo?.user?.as_company_detail?.company_name,
+        invoiceAuthor: userInfo?.user?.name,
+        companyAddress: userInfo?.user?.as_company_detail?.company_address,
+        companyCity: userInfo?.user?.as_company_detail?.company_city,
+        companyCountry: userInfo?.user?.as_company_detail?.company_country,
         clientName: "",
         clientAddress: "",
         clientCity: "",
@@ -104,34 +132,44 @@ const InvoicePage = () => {
                         <div className="flex justify-between items-center">
                             {/* image */}
                             <div className="flex items-center justify-center">
-                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-48 h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <AiOutlineCloudUpload className='w-6 h-6 text-gray-500 dark:text-gray-400' />
-                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                            <CldUploadButton onUpload={(data: any) => {
-                                                setLogoUrl(data?.info?.secure_url)
+                                {
+                                    logoUrl ? (<CldImage
+                                        width="240"
+                                        height="240"
+                                        src={logoUrl}
+                                        alt="invoice logo"
+                                    />) : (
 
-                                            }} className='' uploadPreset="InvoicePreset" />
-                                        </p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">PNG (240x240px)</p>
-                                    </div>
-                                    <input id="dropzone-file" type="file" className="hidden" />
-                                </label>
+                                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-48 h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <AiOutlineCloudUpload className='w-6 h-6 text-gray-500 dark:text-gray-400' />
+                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                    <CldUploadButton onUpload={(data: any) => {
+                                                        setLogoUrl(data?.info?.secure_url)
+
+                                                    }} className='' uploadPreset="InvoicePreset" />
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">PNG (240x240px)</p>
+                                            </div>
+                                            <input id="dropzone-file" type="file" className="hidden" />
+                                        </label>
+                                    )
+                                }
                             </div>
                             <h2 className='text-4xl uppercase font-semibold'>Invoice Form</h2>
-                        </div>
+                        </div >
 
                         {/* Company details */}
-                        <div className="flex flex-col w-1/2 mt-6">
+                        < div className="flex flex-col w-1/2 mt-6" >
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Company Name' name='companyName' onChange={handleInputChange} value={formData.companyName} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Name' name='invoiceAuthor' onChange={handleInputChange} value={formData.invoiceAuthor} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Company's Address" name='companyAddress' onChange={handleInputChange} value={formData.companyAddress} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='companyCity' onChange={handleInputChange} value={formData.companyCity} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Country' name='companyCountry' onChange={handleInputChange} value={formData.companyCountry} />
-                        </div>
+                        </div >
 
                         {/* bill to   */}
-                        <div className="flex justify-between gap-4">
+                        < div className="flex justify-between gap-4" >
                             <div className="flex flex-col w-1/2 mt-6">
                                 <h2 className='mb-2'>Bill To:</h2>
                                 <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Client Name' name='clientName' onChange={handleInputChange} value={formData.clientName} />
@@ -155,17 +193,21 @@ const InvoicePage = () => {
                                 </div>
 
                             </div>
-                        </div>
+                        </div >
                         {/* table */}
-                        <FormTable updateTableData={updateTableData} />
+                        < FormTable updateTableData={updateTableData} />
 
                         <button className='bg-blue-600 py-3 px-6 text-white' type='submit'>Create</button>
-                    </form>
+                    </form >
                 )
             }
 
-        </div>
+        </div >
     )
 }
 
 export default InvoicePage
+function parseJwt(token: string | null) {
+    throw new Error('Function not implemented.')
+}
+
