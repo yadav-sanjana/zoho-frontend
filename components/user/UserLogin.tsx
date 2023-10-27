@@ -16,7 +16,7 @@ interface User {
     updatedAt: string;
 }
 
-function parseJwt(token: string): Record<string, any> | null {
+export function parseJwt(token: string): Record<string, any> | null {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

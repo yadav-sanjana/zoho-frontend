@@ -1,5 +1,4 @@
 'use client'
-import FormEditInvoice from '@/components/invoice/FormEditInvoice'
 import FormPreview from '@/components/invoice/FormPreview'
 import FormTable from '@/components/invoice/FormTable'
 import axios from 'axios'
@@ -8,26 +7,65 @@ import React, { useEffect, useState } from 'react'
 import { AiFillEye, AiFillPrinter, AiOutlineCloudUpload, AiOutlineDownload, AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import { CiMail } from 'react-icons/ci'
 
-const InvoicePage = ({
-    companyName,
-    userName,
-    companyAddress,
-    companyCity,
-    companyCountry
-}) => {
+interface UserType {
+    id: number;
+    name: string;
+    role: number;
+    email: string;
+    company_id: number;
+    created_by: number;
+    updated_by?: null;
+    createdAt: string;
+    updatedAt: string;
+    as_company_detail: AsCompanyDetail;
+    as_role: AsRole;
+}
+interface AsCompanyDetail {
+    id: number;
+    company_name: string;
+    company_address: string;
+    company_city: string;
+    company_country: string;
+    company_zip: number;
+    company_logo: string;
+}
+interface AsRole {
+    id: number;
+    role: string;
+}
 
-    const [userInfo, setUserInfo] = useState<any>(null)
+
+const InvoicePage = () => {
+
+    const [userInfo, setUserInfo] = useState<UserType>()
+    const [logo, setLogo] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token')
-            const decodeToken = parseJwt(token)
-            console.log(decodeToken);
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${decodeToken?.email}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user-info`, {
+                    headers: {
+                        'Authorization': localStorage.getItem('token')
+                    }
+                });
                 setUserInfo(response.data);
+                setFormData({
+                    companyName: response.data.as_company_detail.company_name,
+                    invoiceAuthor: response.data.name,
+                    companyAddress: response.data.as_company_detail.company_address,
+                    companyCity: response.data.as_company_detail.company_city,
+                    companyCountry: response.data.as_company_detail.company_country,
+                    companylogo: response.data.as_company_detail.company_logo,
+                    clientName: '',
+                    clientAddress: '',
+                    clientCity: '',
+                    clientCountry: '',
+                    invoice_num: '',
+                    invoiceDate: '',
+                    invoiceDueDate: '',
+                });
 
-                console.log(response.data);
+                console.log(response.data, "user data");
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -40,11 +78,12 @@ const InvoicePage = ({
     const [logoUrl, setLogoUrl] = useState("")
 
     const [formData, setFormData] = useState({
-        companyName: userInfo?.user?.as_company_detail?.company_name,
-        invoiceAuthor: userInfo?.user?.name,
-        companyAddress: userInfo?.user?.as_company_detail?.company_address,
-        companyCity: userInfo?.user?.as_company_detail?.company_city,
-        companyCountry: userInfo?.user?.as_company_detail?.company_country,
+        companyName: '',
+        invoiceAuthor: '',
+        companyAddress: '',
+        companyCity: '',
+        companyCountry: '',
+        companylogo: '',
         clientName: "",
         clientAddress: "",
         clientCity: "",
@@ -54,6 +93,10 @@ const InvoicePage = ({
         invoiceDueDate: ""
 
     })
+    console.log(formData, "formdata");
+    console.log(userInfo, "information received");
+
+
 
     const [tableData, setTableData] = useState([])
 
@@ -82,7 +125,7 @@ const InvoicePage = ({
         setTableData(newTableData)
     }
 
-    console.log(tableData);
+    // console.log(tableData);
 
     return (
         <div className='bg-slate-50 py-8 md:py-8 px-4 md:px-16'>
@@ -132,36 +175,38 @@ const InvoicePage = ({
                         <div className="flex justify-between items-center">
                             {/* image */}
                             <div className="flex items-center justify-center">
-                                {
-                                    logoUrl ? (<CldImage
-                                        width="240"
-                                        height="240"
-                                        src={logoUrl}
+                                {formData.companylogo ? (
+                                    <CldImage
+                                        width="200"
+                                        height="200"
+                                        src={formData.companylogo}
                                         alt="invoice logo"
-                                    />) : (
+                                    />
+                                ) : (
 
-                                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-48 h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <AiOutlineCloudUpload className='w-6 h-6 text-gray-500 dark:text-gray-400' />
-                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                    <CldUploadButton onUpload={(data: any) => {
-                                                        setLogoUrl(data?.info?.secure_url)
+                                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-48 h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <AiOutlineCloudUpload className='w-6 h-6 text-gray-500 dark:text-gray-400' />
+                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                <CldUploadButton onUpload={(data: any) => {
+                                                    setLogoUrl(data?.info?.secure_url)
 
-                                                    }} className='' uploadPreset="InvoicePreset" />
-                                                </p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">PNG (240x240px)</p>
-                                            </div>
-                                            <input id="dropzone-file" type="file" className="hidden" />
-                                        </label>
-                                    )
+                                                }} className='' uploadPreset="InvoicePreset" />
+                                            </p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400">PNG (240x240px)</p>
+                                        </div>
+                                        <input id="dropzone-file" type="file" className="hidden" />
+                                    </label>
+                                )
                                 }
                             </div>
+
                             <h2 className='text-4xl uppercase font-semibold'>Invoice Form</h2>
                         </div >
 
                         {/* Company details */}
                         < div className="flex flex-col w-1/2 mt-6" >
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Company Name' name='companyName' onChange={handleInputChange} value={formData.companyName} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" name='companyName' onChange={handleInputChange} value={formData.companyName} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Name' name='invoiceAuthor' onChange={handleInputChange} value={formData.invoiceAuthor} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Company's Address" name='companyAddress' onChange={handleInputChange} value={formData.companyAddress} />
                             <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='companyCity' onChange={handleInputChange} value={formData.companyCity} />
