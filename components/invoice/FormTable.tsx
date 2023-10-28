@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { AiOutlineCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 
 const FormTable = ({ updateTableData }) => {
+    const [total, setTotal] = useState(0)
     const [tableData, setTableData] = useState([
         {
             item: "",
@@ -51,12 +52,19 @@ const FormTable = ({ updateTableData }) => {
                 updatedData[index].amount = ""
             }
 
+            const amt = updatedData.map((data) => parseFloat(data.amount));
+            console.log(amt);
+
+            const sum = amt.reduce((prev, curr) => prev + curr, 0);
+
+            console.log('Sum of amounts:', sum);
+            const totalAmount = Number(sum.toFixed(2))
+            setTotal(totalAmount)
+
         }
 
         setTableData(updatedData)
-        console.log(updatedData);
         updateTableData(updatedData)
-
     }
 
     return (
@@ -160,6 +168,15 @@ const FormTable = ({ updateTableData }) => {
                     </button>
                 </tbody>
             </table>
+            <div className="flex flex-row justify-between w-full">
+                <div className='w-full'><></></div>
+                <div className='w-full'>
+                    <div className="flex p-4">
+                        <p className='text-2xl p-2 items-center'>Total Amount :</p>
+                        <p className='text-xl p-2 items-center'>{total}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

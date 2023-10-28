@@ -25,7 +25,6 @@ const FormPreview = ({ data }) => {
 
             {/* invoice image & label */}
             <div className="flex justify-between items-center">
-                {/* image */}
                 <div className="flex items-center justify-center">
                     {companylogo && (
                         <CldImage
@@ -41,7 +40,7 @@ const FormPreview = ({ data }) => {
             </div >
 
             {/* Company details */}
-            < div className="flex flex-col w-1/2 mt-6" >
+            < div className="flex flex-col w-1/2 mt-6 p-4" >
                 <h2 className='font-semibold mb-2'>From : </h2>
                 <div className="flex">
                     <p className='text-base'>{companyName}</p>
@@ -62,7 +61,7 @@ const FormPreview = ({ data }) => {
             </div >
 
             {/* bill to   */}
-            < div className="flex justify-between gap-4 mb-10" >
+            < div className="flex justify-between gap-4 mb-10 p-4" >
                 <div className="flex flex-col w-1/2 mt-6">
                     <h2 className='mb-2 font-semibold'>Bill To:</h2>
                     <div className="flex">

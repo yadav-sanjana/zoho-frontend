@@ -3,9 +3,10 @@ import FormPreview from '@/components/invoice/FormPreview'
 import FormTable from '@/components/invoice/FormTable'
 import axios from 'axios'
 import { CldImage, CldUploadButton } from 'next-cloudinary'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AiFillEye, AiFillPrinter, AiOutlineCloudUpload, AiOutlineDownload, AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import { CiMail } from 'react-icons/ci'
+import { useReactToPrint } from 'react-to-print';
 
 interface UserType {
     id: number;
@@ -39,6 +40,7 @@ const InvoicePage = () => {
 
     const [userInfo, setUserInfo] = useState<UserType>()
     const [combinedData, setCombinedData] = useState({})
+    const invoiceRef: any = useRef()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -103,9 +105,13 @@ const InvoicePage = () => {
         })
     }
 
-    const updateTableData= (newTableData) => {
+    const updateTableData = (newTableData) => {
         setTableData(newTableData)
     }
+
+    const handlePrint = useReactToPrint({
+        content: () => invoiceRef.current,
+    })
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
@@ -140,13 +146,9 @@ const InvoicePage = () => {
                             </div>
                         )}
                     </button>
-                    <button className='flex items-center space-x-2 px-3 py-2 rounded-sm border border-slate-600'>
+                    <button onClick={handlePrint} className='flex items-center space-x-2 px-3 py-2 rounded-sm border border-slate-600'>
                         <AiFillPrinter />
-                        <span>Print</span>
-                    </button>
-                    <button className='flex items-center space-x-2 px-3 py-2 rounded-sm border border-slate-600'>
-                        <AiOutlineDownload />
-                        <span>Download</span>
+                        <span>Print/Download</span>
                     </button>
                 </div>
                 <div className="flex gap-4">
@@ -163,7 +165,9 @@ const InvoicePage = () => {
 
             {
                 preview ? (
-                    <FormPreview data={combinedData} />
+                    <div ref={invoiceRef}>
+                        <FormPreview data={combinedData} />
+                    </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mx-auto">
 
