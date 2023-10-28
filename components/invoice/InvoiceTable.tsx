@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Eye, EyeIcon, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import { InvoiceDetail } from './InvoiceDetail';
+import { InvoiceDetail } from './extra/InvoiceDetail';
 
 interface InvoiceType {
     id: number;
