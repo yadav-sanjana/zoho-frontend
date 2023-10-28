@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AiOutlineCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 
-const FormTable = (updateTableData) => {
+const FormTable = ({ updateTableData }) => {
     const [tableData, setTableData] = useState([
         {
             item: "",
@@ -55,7 +55,7 @@ const FormTable = (updateTableData) => {
 
         setTableData(updatedData)
         console.log(updatedData);
-        updateTableData(updateTableData)
+        updateTableData(updatedData)
 
     }
 

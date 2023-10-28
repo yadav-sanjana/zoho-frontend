@@ -38,7 +38,7 @@ interface AsRole {
 const InvoicePage = () => {
 
     const [userInfo, setUserInfo] = useState<UserType>()
-    const [logo, setLogo] = useState("")
+    const [combinedData, setCombinedData] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,13 +93,7 @@ const InvoicePage = () => {
         invoiceDueDate: ""
 
     })
-    console.log(formData, "formdata");
-    console.log(userInfo, "information received");
-
-
-
     const [tableData, setTableData] = useState([])
-
 
     const handleInputChange = (e: { target: { name: any; value: any } }) => {
         const { name, value } = e.target
@@ -108,21 +102,23 @@ const InvoicePage = () => {
             [name]: value
         })
     }
+
+    const updateTableData= (newTableData) => {
+        setTableData(newTableData)
+    }
+
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
 
-        const combinedData = {
+        const allData = {
             ...formData,
             tableData
         }
-        console.log(combinedData, "combined data")
+        console.log(allData, " data")
+        setCombinedData(allData)
+        console.log(combinedData, "combined objected");
 
-        console.log(formData);
         setPreview(!preview)
-    }
-
-    const updateTableData: any = (newTableData) => {
-        setTableData(newTableData)
     }
 
     // console.log(tableData);
@@ -167,7 +163,7 @@ const InvoicePage = () => {
 
             {
                 preview ? (
-                    <FormPreview data={formData} />
+                    <FormPreview data={combinedData} />
                 ) : (
                     <form onSubmit={handleSubmit} className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mx-auto">
 
@@ -177,8 +173,8 @@ const InvoicePage = () => {
                             <div className="flex items-center justify-center">
                                 {formData.companylogo ? (
                                     <CldImage
-                                        width="200"
-                                        height="200"
+                                        width="110"
+                                        height="110"
                                         src={formData.companylogo}
                                         alt="invoice logo"
                                     />
@@ -195,13 +191,13 @@ const InvoicePage = () => {
                                             </p>
                                             <p className="text-xs text-gray-500 dark:text-gray-400">PNG (240x240px)</p>
                                         </div>
-                                        <input id="dropzone-file" type="file" className="hidden" />
+                                        <input type="text" className="hidden" name='companylogo' value={formData.companylogo} />
                                     </label>
                                 )
                                 }
                             </div>
 
-                            <h2 className='text-4xl uppercase font-semibold'>Invoice Form</h2>
+                            <h2 className='text-3xl uppercase font-semibold'>Invoice Form</h2>
                         </div >
 
                         {/* Company details */}
