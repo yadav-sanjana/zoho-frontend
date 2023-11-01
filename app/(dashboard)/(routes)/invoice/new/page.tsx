@@ -72,6 +72,8 @@ interface AsCompany {
 
 
 const InvoicePage = () => {
+    const [selectedTerm, setSelectedTerm] = useState('');
+    const [discount, setDiscount] = useState()
 
     const [userInfo, setUserInfo] = useState<UserType>()
     const [combinedData, setCombinedData] = useState({})
@@ -93,7 +95,7 @@ const InvoicePage = () => {
                     companyCity: response.data.as_company_detail.company_city,
                     companyCountry: response.data.as_company_detail.company_country,
                     companylogo: response.data.as_company_detail.company_logo,
-                    customer_id: 0,
+                    customer_id: customer_id,
                     clientName: '',
                     clientAddress: '',
                     clientCity: '',
@@ -101,6 +103,10 @@ const InvoicePage = () => {
                     invoice_num: '',
                     invoiceDate: '',
                     invoiceDueDate: '',
+                    ATC: '',
+                    customerNotes: '',
+                    subject: '',
+                    discount: ''
                 });
 
                 console.log(response.data, "user data");
@@ -129,8 +135,11 @@ const InvoicePage = () => {
         clientCountry: "",
         invoice_num: "",
         invoiceDate: "",
-        invoiceDueDate: ""
-
+        invoiceDueDate: "",
+        subject: "",
+        customerNotes: "",
+        ATC: "",
+        discount: "",
     })
 
     //terms
@@ -154,6 +163,29 @@ const InvoicePage = () => {
         fetchData();
     }, []);
 
+    // //terms by id
+
+    const [termID, setTermID] = useState(1)
+    const [termData, setTermData] = useState<any>([]);
+    useEffect(() => {
+
+        fetchTermData(termID);
+    }, []);
+
+    const fetchTermData = async (term: number) => {
+        try {
+            const termsData = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/terms/${termID}`);
+            if (!termsData.data) {
+                throw new Error('Network response was not ok');
+            }
+
+            setTermData(termsData.data);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        }
+    };
 
     const [loading, setLoading] = useState<boolean>(true)
     const [customer_id, setCustomer_id] = useState<number>(0)
@@ -189,7 +221,7 @@ const InvoicePage = () => {
             setLoading(false);
 
             console.log(customerInfo.data, "customer data");
-            
+
 
             setFormData((prevData) => ({
                 ...prevData,
@@ -211,12 +243,32 @@ const InvoicePage = () => {
     }, []);
 
     const handleDropdownChange = (e) => {
+        const value2 = e.target.value
 
-        // setCustomer_id(omer_id)
-        console.log(customer_id, "customer id clicked");
-        fetchCustomerData(customer_id)
-        console.log(customerData)
+        console.log(value2, "value2 fetched")
+        setCustomer_id(value2)
+        fetchCustomerData(value2)
     };
+
+    const handleTermDropdownChange = (e) => {
+        const termID = e.target.value
+        console.log(termID, "term fetched")
+        setTermID(termID)
+        fetchTermData(termID)
+    };
+
+    const handleTaxDropdown = (e) => {
+        const selectedValue = e.target.value;
+        setSelectedTerm(selectedValue);
+
+        const calculatedDiscount = formData.discount
+        const taxableAmount = total - Number(calculatedDiscount);
+        const cgst = taxableAmount * 0.09; // 9% CGST
+        const sgst = taxableAmount * 0.09; // 9% SGST
+        const finalTotal = taxableAmount + cgst + sgst;
+
+        // setDiscount(calculatedDiscount);
+    }
 
     const [tableData, setTableData] = useState([])
 
@@ -232,15 +284,33 @@ const InvoicePage = () => {
         setTableData(newTableData)
     }
 
+    const [total, setTotal] = useState(0)
+    const totalAmt = (amt) => {
+        setTotal(amt)
+    }
+
     const handlePrint = useReactToPrint({
         content: () => invoiceRef.current,
+    })
+
+
+    const [invoiceForm, setInvoiceForm] = useState({
+        customer: customer_id,
+        invoice_no: formData.invoice_num,
+        order_no: "",
+        invoice_date: formData.invoiceDate,
+        sales_person: userInfo?.id,
+        subject: formData.subject,
+        customer_notes: formData.customerNotes,
+        ATC: formData.ATC,
+        terms: term
     })
 
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
 
         const allData = {
-            ...formData,
+            ...invoiceForm,
             tableData
         }
         console.log(allData, " data")
@@ -364,14 +434,95 @@ const InvoicePage = () => {
                                     <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDate' onChange={handleInputChange} value={formData.invoiceDate} />
                                 </div>
                                 <div className="flex gap-2">
+                                    <label className='font-semibold text-slate-500' htmlFor="term">Term : </label>
+                                    <select id="term" name="term" className="h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400 border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleTermDropdownChange}>
+                                        {term?.map((val) => (
+                                            <option key={val.id} value={val.id}>
+                                                {val.term}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex gap-2">
                                     <label className='font-semibold text-slate-500' htmlFor="due_date">Due Date :</label>
                                     <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDueDate' onChange={handleInputChange} value={formData.invoiceDueDate} />
                                 </div>
-
                             </div>
+
+
+
                         </div >
                         {/* table */}
-                        < FormTable updateTableData={updateTableData} />
+                        < FormTable updateTableData={updateTableData} totalAmt={totalAmt} />
+                        <div className="flex">
+                            <div className="flex flex-row w-1/2">
+                                <div className='w-full mr-8'>
+                                    <div className="flex font-semibold text-slate-500 justify-between">
+                                        <p className='text-base p-2'>Subject:</p>
+                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Write subject...'></textarea>
+                                    </div>
+                                    <div className="flex font-semibold text-slate-500  justify-between">
+                                        <p className='text-base p-2'>Notes:</p>
+                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Notes...'></textarea>
+                                    </div>
+                                    <div className="flex font-semibold text-slate-500  justify-between">
+                                        <p className='text-base p-2'>Additional :</p>
+                                        <textarea className='text-xl p-2' placeholder='...'></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-row w-1/2">
+                                <table className='w-full ml-4'>
+                                    <thead>
+
+                                    </thead>
+                                    <tbody className='flex-col justify-between items-center'>
+                                        <tr>
+                                            <td>
+                                                <label className='font-semibold text-slate-500' htmlFor="term">Tax : </label>
+                                            </td>
+                                            <td>
+                                                <select id="term" name="term" className="h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400 border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleTaxDropdown}>
+                                                    {term?.map((val) => (
+                                                        <option key={val.id} value={val.id}>
+                                                            {val.term}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> <label className='font-semibold text-slate-500' htmlFor="subtotal">Sub-total :</label></td>
+                                            <td>{total}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">Discount :</label>
+                                            </td>
+                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Taxable Amount :
+                                            </td>
+                                            <td>{total}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CGST :</td>
+                                            <td>{234}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SGST :</td>
+                                            <td>18</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total :</td>
+                                            <td>18</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         <button className='bg-blue-600 py-3 px-6 text-white' type='submit'>Create</button>
                     </form >

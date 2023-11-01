@@ -4,7 +4,7 @@ import { Card, CardContent } from "../../ui/card";
 import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, Sheet } from "../../ui/sheet";
 import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { Button } from "../../ui/button";
-import logo from '../../public/logo.jpeg'
+// import logo from '../../public/logo.jpeg'
 
 export interface InvoiceType {
     id: number;
@@ -94,7 +94,7 @@ export const InvoiceDetail = ({ id }) => {
 
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/invoice/${id}`)
             setInvoice(response.data.invoice)
-            setLogoo(logo)
+            // setLogoo(logo)
 
             console.log(response.data.invoice);
 
