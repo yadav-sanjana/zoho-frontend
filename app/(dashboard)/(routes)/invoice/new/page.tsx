@@ -34,6 +34,41 @@ interface AsRole {
     id: number;
     role: string;
 }
+interface CustomerType {
+    id: number;
+    customerType: string;
+    contactPerson: string;
+    company: string;
+    firstname: string;
+    lastname: string;
+    customer_email: string;
+    skype_name: string;
+    designation: string;
+    work_phone: string;
+    mobile_phone: string;
+    razorpay_id?: string | null;
+    stripe_id?: string | null;
+    website: string;
+    company_detail: number;
+    created_by?: null;
+    updated_by?: null;
+    createdAt: string;
+    updatedAt: string;
+    as_company: AsCompany;
+}
+interface AsCompany {
+    id: number;
+    company_name: string;
+    company_address: string;
+    company_city: string;
+    company_country: string;
+    company_zip: number;
+    company_logo?: null;
+    created_by?: null;
+    updated_by?: null;
+    createdAt: string;
+    updatedAt: string;
+}
 
 
 const InvoicePage = () => {
@@ -58,6 +93,7 @@ const InvoicePage = () => {
                     companyCity: response.data.as_company_detail.company_city,
                     companyCountry: response.data.as_company_detail.company_country,
                     companylogo: response.data.as_company_detail.company_logo,
+                    customer_id: 0,
                     clientName: '',
                     clientAddress: '',
                     clientCity: '',
@@ -86,6 +122,7 @@ const InvoicePage = () => {
         companyCity: '',
         companyCountry: '',
         companylogo: '',
+        customer_id: 0,
         clientName: "",
         clientAddress: "",
         clientCity: "",
@@ -95,6 +132,92 @@ const InvoicePage = () => {
         invoiceDueDate: ""
 
     })
+
+    //terms
+    const [term, setTerm] = useState<any>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const termsResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/terms`);
+                if (!termsResponse.data) {
+                    throw new Error('Network response was not ok');
+                }
+
+                setTerm(termsResponse.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+    const [loading, setLoading] = useState<boolean>(true)
+    const [customer_id, setCustomer_id] = useState<number>(0)
+
+    const [customer, setcustomer] = useState<any>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const customerResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer`);
+                if (!customerResponse.data) {
+                    throw new Error('Network response was not ok');
+                }
+                setcustomer(customerResponse.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
+    const [customerData, setcustomerData] = useState<CustomerType>()
+    const fetchCustomerData = async (customer_id) => {
+        try {
+            const customerInfo = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${customer_id}`);
+            if (!customerInfo.data) {
+                throw new Error('Network response was not ok');
+            }
+            setcustomerData(customerInfo.data);
+            setLoading(false);
+
+            console.log(customerInfo.data, "customer data");
+            
+
+            setFormData((prevData) => ({
+                ...prevData,
+                customer_id: formData.customer_id,
+                clientName: customerInfo.data.firstname,
+                clientAddress: customerInfo.data.as_company.company_address,
+                clientCity: customerInfo.data.as_company.company_city,
+                clientCountry: customerInfo.data.as_company.company_country
+            }));
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCustomerData(customer_id);
+    }, []);
+
+    const handleDropdownChange = (e) => {
+
+        // setCustomer_id(omer_id)
+        console.log(customer_id, "customer id clicked");
+        fetchCustomerData(customer_id)
+        console.log(customerData)
+    };
+
     const [tableData, setTableData] = useState([])
 
     const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -126,8 +249,6 @@ const InvoicePage = () => {
 
         setPreview(!preview)
     }
-
-    // console.log(tableData);
 
     return (
         <div className='bg-slate-50 py-8 md:py-8 px-4 md:px-16'>
@@ -217,6 +338,16 @@ const InvoicePage = () => {
                         < div className="flex justify-between gap-4" >
                             <div className="flex flex-col w-1/2 mt-6">
                                 <h2 className='mb-2'>Bill To:</h2>
+                                <div className="h-7 flex text-base border-0 p-1 mb-1">
+                                    <label className="block text-gray-600 text-sm w-1/3">Client</label>
+                                    <select id="customer_id" name="customer_id" className="w-2/3  border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleDropdownChange}>
+                                        {customer.map((val) => (
+                                            <option key={val.id} value={val.id}>
+                                                {val.firstname}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                                 <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Client Name' name='clientName' onChange={handleInputChange} value={formData.clientName} />
                                 <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Client's Address" name='clientAddress' onChange={handleInputChange} value={formData.clientAddress} />
                                 <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='clientCity' onChange={handleInputChange} value={formData.clientCity} />
@@ -252,7 +383,4 @@ const InvoicePage = () => {
 }
 
 export default InvoicePage
-function parseJwt(token: string | null) {
-    throw new Error('Function not implemented.')
-}
 

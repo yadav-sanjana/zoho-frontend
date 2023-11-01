@@ -1,7 +1,8 @@
-import axios from 'axios';
-import { Eye, EyeIcon, Plus } from 'lucide-react';
+import axios from 'axios'
+import { Eye } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { InvoiceDetail } from './extra/InvoiceDetail';
+import { InvoiceDetail } from './extra/InvoiceDetail'
+
 
 interface InvoiceType {
     id: number;
@@ -13,10 +14,13 @@ interface InvoiceType {
     due_date: string;
     sales_person: number;
     subject: string;
+    discount?: null;
+    tax?: null;
+    amount?: number | null;
+    balance?: null;
     customer_notes: string;
     ATC: string;
     file: string;
-    amount: number;
     status: string;
     created_by: number;
     updated_by?: null;
@@ -26,6 +30,7 @@ interface InvoiceType {
     as_sales_person: AsSalesPerson;
     as_terms: AsTerms;
 }
+
 interface AsCustomer {
     id: number;
     customerType: string;
@@ -38,17 +43,22 @@ interface AsCustomer {
     designation: string;
     work_phone: string;
     mobile_phone: string;
+    razorpay_id?: null;
+    stripe_id?: null;
     website: string;
+    company_detail: number;
     created_by?: null;
     updated_by?: null;
     createdAt: string;
     updatedAt: string;
 }
+
 interface AsSalesPerson {
     id: number;
     email: string;
     name: string;
 }
+
 interface AsTerms {
     id: number;
     term: string;
@@ -144,7 +154,7 @@ const InvoiceTable = () => {
                 </table>
             </div>
         </>
-    );
+    )
 }
 
 export default InvoiceTable

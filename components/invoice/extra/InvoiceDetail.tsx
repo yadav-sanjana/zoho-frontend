@@ -1,12 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { Card, CardContent } from "../../ui/card";
-import HTMLInvoiceTemplate from './InvoicePdf'
 import { SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, Sheet } from "../../ui/sheet";
 import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { Button } from "../../ui/button";
 import logo from '../../public/logo.jpeg'
-import { Files } from "lucide-react";
 
 export interface InvoiceType {
     id: number;

@@ -1,4 +1,5 @@
-'use client';
+'use client'
+import InvoiceTable from '@/components/invoice/InvoiceTable';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 
@@ -15,6 +16,7 @@ const InvoicePage = () => {
           </div>
         </Link>
       </button>
+      <InvoiceTable/>
     </>
   );
 }

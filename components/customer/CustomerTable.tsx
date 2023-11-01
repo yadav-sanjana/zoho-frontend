@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Edit, Eye } from 'lucide-react';
-import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import CustomerDetail from './CustomerDetail';
 import CustomerUpdateForm from './CustomerUpdateForm';
@@ -92,25 +91,19 @@ const CustomerTable = () => {
                                 <td className="px-6 py-4">{data.work_phone}</td>
 
                                 {/* view */}
-                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}><Eye />
+                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}>
                                     {showCustomerDetail ? (
                                         <CustomerDetail id={selectedCustomerId} />
-                                    ) : null}
+                                    ) : <Eye />}
                                 </button>
 
-                                {/* edit */}
-                                <button className="px-6 py-4" onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
-                                    {showCustomerUpdateForm ? (
-                                        <CustomerUpdateForm customer_id={selectedCustomerId} />
-                                    ) : null}
-                                </button>
                                 <td className="px-6 py-4">
-                                    <a
-                                        href="#"
-                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                    >
-                                        Edit
-                                    </a>
+                                    {/* edit */}
+                                    <button className="px-6 py-4" onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
+                                        {showCustomerUpdateForm ? (
+                                            <CustomerUpdateForm customer_id={selectedCustomerId} />
+                                        ) : null}
+                                    </button>
                                 </td>
                             </tr>
                         ))}

@@ -1,14 +1,18 @@
 import axios from 'axios';
+import { Eye } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
-interface CustomerType {
+interface UserType {
     id: number;
+    emp_id: string;
     name: string;
     email: string;
+    contact_number: string;
+    role: string;
 }
 
 const SalesPersonTable = () => {
-    const [data, setData] = useState<CustomerType[]>([]);
+    const [data, setData] = useState<UserType[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,10 +35,19 @@ const SalesPersonTable = () => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
+                                Emp id
+                            </th>
+                            <th scope="col" className="px-6 py-3">
                                 Name
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 email
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Phone
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                role
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Action
@@ -48,16 +61,17 @@ const SalesPersonTable = () => {
                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             >
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {item.name}
+                                    {item.emp_id}
                                 </td>
+                                <td className="px-6 py-4">{item.name}</td>
                                 <td className="px-6 py-4">{item.email}</td>
+
+                                <td className="px-6 py-4">{item.contact_number}</td>
+                                <td className="px-6 py-4">{item.role}</td>
+
                                 <td className="px-6 py-4">
-                                    <a
-                                        href="#"
-                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                    >
-                                        Edit
-                                    </a>
+
+                                    <Eye />
                                 </td>
                             </tr>
                         ))}
