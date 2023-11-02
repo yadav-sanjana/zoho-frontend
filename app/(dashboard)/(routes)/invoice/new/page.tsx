@@ -466,16 +466,14 @@ const InvoicePage = () => {
                                         <textarea className='text-xl p-2 placeholder:text-base' placeholder='Notes...'></textarea>
                                     </div>
                                     <div className="flex font-semibold text-slate-500  justify-between">
-                                        <p className='text-base p-2'>Additional :</p>
+                                        <p className='text-base p-2'>Additional:</p>
                                         <textarea className='text-xl p-2' placeholder='...'></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex flex-row w-1/2">
                                 <table className='w-full ml-4'>
-                                    <thead>
-
-                                    </thead>
+                                   
                                     <tbody className='flex-col justify-between items-center'>
                                         <tr>
                                             <td>
@@ -503,21 +501,25 @@ const InvoicePage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                Taxable Amount :
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">Taxable Amount :</label>
                                             </td>
-                                            <td>{total}</td>
+                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={total} /></td>
                                         </tr>
                                         <tr>
-                                            <td>CGST :</td>
-                                            <td>{234}</td>
+                                            <td>
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">CGST :</label></td>
+                                            <td>
+                                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
                                         </tr>
                                         <tr>
-                                            <td>SGST :</td>
-                                            <td>18</td>
+                                            <td>
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">SGST : </label></td>
+                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
                                         </tr>
-                                        <tr>
-                                            <td>Total :</td>
-                                            <td>18</td>
+                                        <tr className=''>
+                                            <td>
+                                                <label className='font-semibold text-3xl text-black-500' htmlFor="discount">Total :</label></td>
+                                            <td><input className=' flex font-semibold text-3xl placeholder:text-black-400' type="number" name='total' onChange={handleInputChange} value={total}/> </td>
                                         </tr>
                                     </tbody>
                                 </table>
