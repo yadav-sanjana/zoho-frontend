@@ -1,4 +1,5 @@
 'use client'
+import { UserType, CustomerType } from '@/app/types'
 import FormPreview from '@/components/invoice/FormPreview'
 import FormTable from '@/components/invoice/FormTable'
 import axios from 'axios'
@@ -8,79 +9,19 @@ import { AiFillEye, AiFillPrinter, AiOutlineCloudUpload, AiOutlineDownload, AiOu
 import { CiMail } from 'react-icons/ci'
 import { useReactToPrint } from 'react-to-print';
 
-interface UserType {
-    id: number;
-    name: string;
-    role: number;
-    email: string;
-    company_id: number;
-    created_by: number;
-    updated_by?: null;
-    createdAt: string;
-    updatedAt: string;
-    as_company_detail: AsCompanyDetail;
-    as_role: AsRole;
-}
-interface AsCompanyDetail {
-    id: number;
-    company_name: string;
-    company_address: string;
-    company_city: string;
-    company_country: string;
-    company_zip: number;
-    company_logo: string;
-}
-interface AsRole {
-    id: number;
-    role: string;
-}
-interface CustomerType {
-    id: number;
-    customerType: string;
-    contactPerson: string;
-    company: string;
-    firstname: string;
-    lastname: string;
-    customer_email: string;
-    skype_name: string;
-    designation: string;
-    work_phone: string;
-    mobile_phone: string;
-    razorpay_id?: string | null;
-    stripe_id?: string | null;
-    website: string;
-    company_detail: number;
-    created_by?: null;
-    updated_by?: null;
-    createdAt: string;
-    updatedAt: string;
-    as_company: AsCompany;
-}
-interface AsCompany {
-    id: number;
-    company_name: string;
-    company_address: string;
-    company_city: string;
-    company_country: string;
-    company_zip: number;
-    company_logo?: null;
-    created_by?: null;
-    updated_by?: null;
-    createdAt: string;
-    updatedAt: string;
-}
-
-
 const InvoicePage = () => {
     const [selectedTerm, setSelectedTerm] = useState('');
-    const [discount, setDiscount] = useState()
+    const [preview, setPreview] = useState(false)
+    const [logoUrl, setLogoUrl] = useState("")
+    const [loading, setLoading] = useState<boolean>(true)
 
     const [userInfo, setUserInfo] = useState<UserType>()
     const [combinedData, setCombinedData] = useState({})
     const invoiceRef: any = useRef()
 
+    //setting user info
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserData = async () => {
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user-info`, {
                     headers: {
@@ -89,38 +30,28 @@ const InvoicePage = () => {
                 });
                 setUserInfo(response.data);
                 setFormData({
+                    ...formData,
                     companyName: response.data.as_company_detail.company_name,
                     invoiceAuthor: response.data.name,
                     companyAddress: response.data.as_company_detail.company_address,
                     companyCity: response.data.as_company_detail.company_city,
                     companyCountry: response.data.as_company_detail.company_country,
                     companylogo: response.data.as_company_detail.company_logo,
-                    customer_id: customer_id,
-                    clientName: '',
-                    clientAddress: '',
-                    clientCity: '',
-                    clientCountry: '',
-                    invoice_num: '',
-                    invoiceDate: '',
-                    invoiceDueDate: '',
-                    ATC: '',
-                    customerNotes: '',
-                    subject: '',
-                    discount: ''
                 });
-
-                console.log(response.data, "user data");
+                setInvoiceForm({
+                    ...invoiceForm,
+                    sales_person: response.data.id
+                })
 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
-        fetchData();
+        fetchUserData();
     }, []);
-    const [preview, setPreview] = useState(false)
-    const [logoUrl, setLogoUrl] = useState("")
 
+
+    //form Data 
     const [formData, setFormData] = useState({
         companyName: '',
         invoiceAuthor: '',
@@ -134,18 +65,38 @@ const InvoicePage = () => {
         clientCity: "",
         clientCountry: "",
         invoice_num: "",
+        term: "",
         invoiceDate: "",
         invoiceDueDate: "",
         subject: "",
         customerNotes: "",
         ATC: "",
         discount: "",
+        cgst: 0,
+        sgst: 0
     })
+
+    //invoice form
+    const [invoiceForm, setInvoiceForm] = useState({
+        customer: 1,
+        invoice_no: '',
+        invoice_date: '',
+        sales_person: 1,
+        subject: '',
+        amount: 0,
+        customer_notes: '',
+        ATC: '',
+        terms: 1,
+        discount: '',
+        tax: '0',
+        balance: 0
+    })
+
 
     //terms
     const [term, setTerm] = useState<any>([]);
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchTermsData = async () => {
             try {
                 const termsResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/terms`);
                 if (!termsResponse.data) {
@@ -160,19 +111,16 @@ const InvoicePage = () => {
             }
         };
 
-        fetchData();
+        fetchTermsData();
     }, []);
 
-    // //terms by id
-
+    //terms by id
     const [termID, setTermID] = useState(1)
     const [termData, setTermData] = useState<any>([]);
     useEffect(() => {
-
         fetchTermData(termID);
     }, []);
-
-    const fetchTermData = async (term: number) => {
+    const fetchTermData = async (termID) => {
         try {
             const termsData = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/terms/${termID}`);
             if (!termsData.data) {
@@ -186,9 +134,6 @@ const InvoicePage = () => {
             setLoading(false);
         }
     };
-
-    const [loading, setLoading] = useState<boolean>(true)
-    const [customer_id, setCustomer_id] = useState<number>(0)
 
     const [customer, setcustomer] = useState<any>([]);
     useEffect(() => {
@@ -210,6 +155,7 @@ const InvoicePage = () => {
     }, []);
 
 
+    const [customer_id, setCustomer_id] = useState<number>(1)
     const [customerData, setcustomerData] = useState<CustomerType>()
     const fetchCustomerData = async (customer_id) => {
         try {
@@ -220,9 +166,6 @@ const InvoicePage = () => {
             setcustomerData(customerInfo.data);
             setLoading(false);
 
-            console.log(customerInfo.data, "customer data");
-
-
             setFormData((prevData) => ({
                 ...prevData,
                 customer_id: formData.customer_id,
@@ -231,6 +174,12 @@ const InvoicePage = () => {
                 clientCity: customerInfo.data.as_company.company_city,
                 clientCountry: customerInfo.data.as_company.company_country
             }));
+            setInvoiceForm({
+                ...invoiceForm,
+                customer: customerInfo.data.id
+            })
+
+            console.log(customerData, "customer data received")
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -242,32 +191,65 @@ const InvoicePage = () => {
         fetchCustomerData(customer_id);
     }, []);
 
-    const handleDropdownChange = (e) => {
-        const value2 = e.target.value
+    const handleCustomerDropdownChange = (e) => {
+        const client_id = e.target.value
 
-        console.log(value2, "value2 fetched")
-        setCustomer_id(value2)
-        fetchCustomerData(value2)
+        console.log(client_id, "client id fetched")
+        setCustomer_id(client_id)
+        fetchCustomerData(client_id)
     };
 
+    //show due date as per term selected
     const handleTermDropdownChange = (e) => {
         const termID = e.target.value
-        console.log(termID, "term fetched")
+        console.log(termID, "term id fetched")
         setTermID(termID)
         fetchTermData(termID)
+
+        const selectedTerm = termData
+
+        const invoiceDate = new Date(formData.invoiceDate);
+        if (invoiceDate && selectedTerm) {
+            const dueDate = new Date(invoiceDate);
+            dueDate.setDate(invoiceDate.getDate() + selectedTerm.days);
+            const formattedDueDate = dueDate.toISOString().split('T')[0];
+            setFormData({
+                ...formData,
+                term: termID,
+                invoiceDueDate: formattedDueDate
+            });
+
+        } else {
+            setFormData({
+                ...formData,
+                term: selectedTerm.term,
+                invoiceDueDate: ''
+            });
+        }
     };
 
+    //calculation
     const handleTaxDropdown = (e) => {
         const selectedValue = e.target.value;
         setSelectedTerm(selectedValue);
 
-        const calculatedDiscount = formData.discount
+        const calculatedDiscount = formData.discount;
         const taxableAmount = total - Number(calculatedDiscount);
         const cgst = taxableAmount * 0.09; // 9% CGST
         const sgst = taxableAmount * 0.09; // 9% SGST
         const finalTotal = taxableAmount + cgst + sgst;
 
-        // setDiscount(calculatedDiscount);
+        setFormData({
+            ...formData,
+            discount: calculatedDiscount
+        });
+        setInvoiceForm({
+            ...invoiceForm,
+            amount: finalTotal,
+            discount: calculatedDiscount,
+            tax: '18%',
+            balance: finalTotal
+        })
     }
 
     const [tableData, setTableData] = useState([])
@@ -280,6 +262,7 @@ const InvoicePage = () => {
         })
     }
 
+    //setting table content
     const updateTableData = (newTableData) => {
         setTableData(newTableData)
     }
@@ -293,30 +276,43 @@ const InvoicePage = () => {
         content: () => invoiceRef.current,
     })
 
-
-    const [invoiceForm, setInvoiceForm] = useState({
-        customer: customer_id,
-        invoice_no: formData.invoice_num,
-        order_no: "",
-        invoice_date: formData.invoiceDate,
-        sales_person: userInfo?.id,
-        subject: formData.subject,
-        customer_notes: formData.customerNotes,
-        ATC: formData.ATC,
-        terms: term
-    })
-
-    const handleSubmit = (e: { preventDefault: () => void }) => {
+    const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
+
+        setInvoiceForm({
+            ...invoiceForm,
+            customer: customer_id,
+            invoice_no: formData.invoice_num,
+            // order_no: "",
+            invoice_date: formData.invoiceDate,
+            sales_person: userInfo?.id || 1,
+            subject: formData.subject,
+            customer_notes: formData.customerNotes,
+            ATC: formData.ATC,
+            terms: termID
+        })
 
         const allData = {
             ...invoiceForm,
-            tableData
+            tableData: tableData
         }
+
         console.log(allData, " data")
         setCombinedData(allData)
         console.log(combinedData, "combined objected");
 
+
+
+        try {
+            await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/invoice`, combinedData, {
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            });
+            console.log('Data sent successfully!');
+        } catch (error) {
+            console.error('Error sending data:', error);
+        }
         setPreview(!preview)
     }
 
@@ -357,7 +353,7 @@ const InvoicePage = () => {
             {
                 preview ? (
                     <div ref={invoiceRef}>
-                        <FormPreview data={combinedData} />
+                        <FormPreview data={{ combinedData, formData }} />
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mx-auto">
@@ -410,7 +406,7 @@ const InvoicePage = () => {
                                 <h2 className='mb-2'>Bill To:</h2>
                                 <div className="h-7 flex text-base border-0 p-1 mb-1">
                                     <label className="block text-gray-600 text-sm w-1/3">Client</label>
-                                    <select id="customer_id" name="customer_id" className="w-2/3  border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleDropdownChange}>
+                                    <select id="customer_id" name="customer_id" className="w-2/3  border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleCustomerDropdownChange}>
                                         {customer.map((val) => (
                                             <option key={val.id} value={val.id}>
                                                 {val.firstname}
@@ -445,7 +441,7 @@ const InvoicePage = () => {
                                 </div>
                                 <div className="flex gap-2">
                                     <label className='font-semibold text-slate-500' htmlFor="due_date">Due Date :</label>
-                                    <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDueDate' onChange={handleInputChange} value={formData.invoiceDueDate} />
+                                    <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDueDate' onChange={handleInputChange} value={formData.invoiceDueDate} disabled />
                                 </div>
                             </div>
 
@@ -459,7 +455,7 @@ const InvoicePage = () => {
                                 <div className='w-full mr-8'>
                                     <div className="flex font-semibold text-slate-500 justify-between">
                                         <p className='text-base p-2'>Subject:</p>
-                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Write subject...'></textarea>
+                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Write subject...' name='subject' onChange={handleInputChange} value={formData.subject}></textarea>
                                     </div>
                                     <div className="flex font-semibold text-slate-500  justify-between">
                                         <p className='text-base p-2'>Notes:</p>
@@ -472,15 +468,15 @@ const InvoicePage = () => {
                                 </div>
                             </div>
                             <div className="flex flex-row w-1/2">
-                                <table className='w-full ml-4'>
-                                   
-                                    <tbody className='flex-col justify-between items-center'>
-                                        <tr>
-                                            <td>
-                                                <label className='font-semibold text-slate-500' htmlFor="term">Tax : </label>
+                                <table >
+
+                                    <tbody className='flex flex-col'>
+                                        <tr className='w-full' >
+                                            <td className='w-1/2'>
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">Tax : </label>
                                             </td>
-                                            <td>
-                                                <select id="term" name="term" className="h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400 border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleTaxDropdown}>
+                                            <td className='w-1/2'>
+                                                <select id="term" name="term" className="h-7 text-base border-0 placeholder:text-slate-400 border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleTaxDropdown}>
                                                     {term?.map((val) => (
                                                         <option key={val.id} value={val.id}>
                                                             {val.term}
@@ -489,37 +485,37 @@ const InvoicePage = () => {
                                                 </select>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td> <label className='font-semibold text-slate-500' htmlFor="subtotal">Sub-total :</label></td>
-                                            <td>{total}</td>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'> <label className='text-slate-500' htmlFor="subtotal">Sub-total :</label></td>
+                                            <td className='w-1/2'>{total}</td>
                                         </tr>
-                                        <tr>
-                                            <td>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'>
                                                 <label className='font-semibold text-slate-500' htmlFor="discount">Discount :</label>
                                             </td>
-                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
+                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <label className='font-semibold text-slate-500' htmlFor="discount">Taxable Amount :</label>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'>
+                                                <label className='font-semibold text-slate-500' htmlFor="amount">Taxable Amount :</label>
                                             </td>
-                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={total} /></td>
+                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='amount' onChange={handleInputChange} value={total} /></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <label className='font-semibold text-slate-500' htmlFor="discount">CGST :</label></td>
-                                            <td>
-                                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'>
+                                                <label className='font-semibold text-slate-500' htmlFor="cgst">CGST :</label></td>
+                                            <td className='w-1/2'>
+                                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='cgst' onChange={handleInputChange} value={formData.cgst} /></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <label className='font-semibold text-slate-500' htmlFor="discount">SGST : </label></td>
-                                            <td><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'>
+                                                <label className='font-semibold text-slate-500' htmlFor="sgst">SGST : </label></td>
+                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='sgst' onChange={handleInputChange} value={formData.sgst} /></td>
                                         </tr>
-                                        <tr className=''>
-                                            <td>
-                                                <label className='font-semibold text-3xl text-black-500' htmlFor="discount">Total :</label></td>
-                                            <td><input className=' flex font-semibold text-3xl placeholder:text-black-400' type="number" name='total' onChange={handleInputChange} value={total}/> </td>
+                                        <tr className='w-full'>
+                                            <td className='w-1/2'>
+                                                <label className=' text-3xl' htmlFor="discount">Total :</label></td>
+                                            <td className='w-1/2'><input className=' text-xl' type="number" name='total' onChange={handleInputChange} value={total} /> </td>
                                         </tr>
                                     </tbody>
                                 </table>

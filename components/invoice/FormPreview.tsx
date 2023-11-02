@@ -16,11 +16,28 @@ const FormPreview = ({ data }) => {
         clientCountry,
         invoice_num,
         invoiceDate,
-        invoiceDueDate } = data
-    console.log(data?.tableData, "table data")
+        invoiceDueDate } = data.formData
+
+    const {
+        customer,
+        invoice_no,
+        invoice_date,
+        sales_person,
+        subject,
+        amount,
+        customer_notes,
+        ATC,
+        terms,
+        discount,
+        tax,
+        balance,
+        tableData
+    } = data.combinedData
+    console.log(data?.combinedData?.tableData, "table data")
 
 
     return (
+
         <form className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 mx-auto">
 
             {/* invoice image & label */}
@@ -95,7 +112,7 @@ const FormPreview = ({ data }) => {
                 </div>
             </div >
             {/* table */}
-            < PreviewTable tableData={data.tableData} />
+            < PreviewTable tableData={tableData} />
 
         </form >
     )
