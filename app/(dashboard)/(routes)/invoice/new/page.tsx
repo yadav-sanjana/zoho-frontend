@@ -88,8 +88,8 @@ const InvoicePage = () => {
         ATC: '',
         terms: 1,
         discount: '',
-        tax: '0',
-        balance: 0
+        tax: 0,
+        payableAmount: 0
     })
 
 
@@ -237,7 +237,9 @@ const InvoicePage = () => {
         const taxableAmount = total - Number(calculatedDiscount);
         const cgst = taxableAmount * 0.09; // 9% CGST
         const sgst = taxableAmount * 0.09; // 9% SGST
-        const finalTotal = taxableAmount + cgst + sgst;
+        const totalTax = cgst + sgst;
+        const finalTotal = taxableAmount + totalTax
+
 
         setFormData({
             ...formData,
@@ -247,8 +249,8 @@ const InvoicePage = () => {
             ...invoiceForm,
             amount: finalTotal,
             discount: calculatedDiscount,
-            tax: '18%',
-            balance: finalTotal
+            tax: totalTax,
+            payableAmount: finalTotal
         })
     }
 
@@ -388,7 +390,7 @@ const InvoicePage = () => {
                                 }
                             </div>
 
-                            <h2 className='text-3xl uppercase font-semibold'>Invoice Form</h2>
+                            <h2 className='text-3xl  text-blue-600  uppercase font-semibold'>Invoice Form</h2>
                         </div >
 
                         {/* Company details */}
@@ -491,7 +493,7 @@ const InvoicePage = () => {
                                         </tr>
                                         <tr className='w-full'>
                                             <td className='w-1/2'>
-                                                <label className='font-semibold text-slate-500' htmlFor="discount">Discount :</label>
+                                                <label className='font-semibold text-slate-500' htmlFor="discount">Discount(₹) :</label>
                                             </td>
                                             <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
                                         </tr>

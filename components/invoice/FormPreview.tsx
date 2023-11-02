@@ -53,7 +53,7 @@ const FormPreview = ({ data }) => {
                     )}
                 </div>
 
-                <h2 className='text-3xl uppercase font-semibold'>Invoice Preview</h2>
+                <h2 className='text-3xl  text-blue-600  uppercase font-semibold'>Invoice Preview</h2>
             </div >
 
             {/* Company details */}

@@ -90,7 +90,7 @@ const FormEditInvoice = () => {
                         <input id="dropzone-file" type="file" className="hidden" />
                     </label>
                 </div>
-                <h2 className='text-4xl uppercase font-semibold'>Invoice Form</h2>
+                <h2 className='text-4xl uppercase  text-blue-600  font-semibold'>Invoice Form</h2>
             </div>
 
             {/* Company details */}
