@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { Eye } from 'lucide-react';
+import { Edit, Eye } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
+import EditSalesPerson from './EditSalesPerson';
 
 interface UserType {
     id: number;
@@ -13,6 +14,14 @@ interface UserType {
 
 const SalesPersonTable = () => {
     const [data, setData] = useState<UserType[]>([]);
+    const [sales_id, setSales_id] = useState(1)
+
+    const [enableEdit, setEnableEdit] = useState(false)
+
+    const editHandle = (id) => {
+        setEnableEdit(true)
+        setSales_id(id)
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,16 +77,21 @@ const SalesPersonTable = () => {
 
                                 <td className="px-6 py-4">{item.contact_number}</td>
                                 <td className="px-6 py-4">{item.role}</td>
+                                <button onClick={() => editHandle(item.id)} type='button'>
 
-                                <td className="px-6 py-4">
+                                    <td className="px-6 py-4">
+                                        <Edit />
 
-                                    <Eye />
-                                </td>
+                                    </td>
+                                </button>
                             </tr>
                         ))}
+                        {enableEdit && (
+                            <EditSalesPerson sales_id={sales_id} enableEdit={enableEdit} />
+                        )}
                     </tbody>
                 </table>
-            </div>
+            </div >
         </>
     );
 };

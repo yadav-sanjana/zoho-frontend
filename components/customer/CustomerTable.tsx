@@ -24,9 +24,12 @@ const CustomerTable = () => {
     const [showCustomerUpdateForm, setShowCustomerUpdateForm] = useState(false);
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
+    const [sheetTrigger, setSheetTrigger] = useState(false)
+
     const handleCustomerDetailClick = (customerId) => {
         setSelectedCustomerId(customerId);
         setShowCustomerDetail(true);
+        setSheetTrigger(true)
 
         console.log(customerId);
 
@@ -91,15 +94,17 @@ const CustomerTable = () => {
                                 <td className="px-6 py-4">{data.work_phone}</td>
 
                                 {/* view */}
-                                <button className="px-6 py-4" onClick={() => handleCustomerDetailClick(data.id)}>
-                                    {showCustomerDetail ? (
-                                        <CustomerDetail id={selectedCustomerId} />
-                                    ) : <Eye />}
+                                <td className="px-6 py-4">
+                                <button  onClick={() => handleCustomerDetailClick(data.id)}><Eye />
                                 </button>
+                                </td>
+                                {showCustomerDetail && (
+                                    <CustomerDetail id={selectedCustomerId} sheetTrigger={sheetTrigger} />
+                                )}
 
                                 <td className="px-6 py-4">
                                     {/* edit */}
-                                    <button className="px-6 py-4" onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
+                                    <button onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
                                         {showCustomerUpdateForm ? (
                                             <CustomerUpdateForm customer_id={selectedCustomerId} />
                                         ) : null}
