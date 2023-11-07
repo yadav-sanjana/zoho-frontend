@@ -82,7 +82,7 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                 {/*header*/}
                                 <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
                                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white w-98">
-                                        Customer Form
+                                        Customer Information
                                     </h3>
                                     <button
                                         onClick={() => setShowDetails(!sheetTrigger)}

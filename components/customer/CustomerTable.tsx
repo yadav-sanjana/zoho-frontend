@@ -95,12 +95,13 @@ const CustomerTable = () => {
 
                                 {/* view */}
                                 <td className="px-6 py-4">
-                                <button  onClick={() => handleCustomerDetailClick(data.id)}><Eye />
-                                </button>
+                                    <button onClick={() => handleCustomerDetailClick(data.id)}><Eye />
+                                        {showCustomerDetail && (
+                                            <CustomerDetail id={selectedCustomerId} sheetTrigger={sheetTrigger} />
+                                        )}
+
+                                    </button>
                                 </td>
-                                {showCustomerDetail && (
-                                    <CustomerDetail id={selectedCustomerId} sheetTrigger={sheetTrigger} />
-                                )}
 
                                 <td className="px-6 py-4">
                                     {/* edit */}
