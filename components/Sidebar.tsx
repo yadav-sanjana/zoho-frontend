@@ -38,12 +38,6 @@ const routes = [
         color: 'text-orange-500'
     },
     {
-        label: "User",
-        icon: User,
-        href: '/user',
-        color: 'text-blue-500'
-    },
-    {
         label: "Settings",
         icon: Settings,
         href: '/settings',

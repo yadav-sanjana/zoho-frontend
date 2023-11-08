@@ -38,6 +38,10 @@ const EditSalesPerson = (sales_id, enableEdit) => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        handleSubmit
+    })
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setId(sales_id.sales_id)
@@ -52,7 +56,6 @@ const EditSalesPerson = (sales_id, enableEdit) => {
             console.error('Error sending data:', error);
         }
         setEditForm(!enableEdit)
-
     }
 
     const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -64,7 +67,7 @@ const EditSalesPerson = (sales_id, enableEdit) => {
     }
 
     const handleClose = () => {
-        setEditForm(!enableEdit)
+        setEditForm(false)
         console.log("closed box")
     }
 
