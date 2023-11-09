@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../app/(dashboard)/(routes)/dashboard/page'
-import { Home } from 'lucide-react';
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
 import NavBar from '../landingPage/NavBar';
@@ -46,20 +45,18 @@ const LoginForm: React.FC = () => {
           <Image src={bgImage} alt='background' className='w-full h-full'></Image>
 
           <div className="p-8">
-            <Home className='h-9 w-8 text-white' />
-            {/* Add any other content here */}
+            {/* <Home className='h-9 w-8 text-white' /> */}
           </div>
         </div>
 
-        <div className="w-1/2 flex items-center justify-center">
-          {/* Move the login form to the right half */}
-          <div className="bg-white p-4 rounded-md shadow-md w-96 border-4 border-cyan-800">
-            <div>
-              <div className="flex">
-                Welcome
+        <div className="w-1/2 bg-gray-200 flex items-center justify-center">
+          <div className="bg-gray-200 p-16 rounded-md shadow-md w-96 border-4 border-cyan-800">
+            <div className='pb-4'>
+              <div className="text-3xl p-2 font-semibold text-center">
+                Welcome Back
               </div>
-            <div className='w-full flex text-green-950 mb-5'>
-            Secure access, limitless potential.
+              <div className='w-full text-center text-green-950 mb-5'>
+                Secure access, limitless potential.
               </div>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
