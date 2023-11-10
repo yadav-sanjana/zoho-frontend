@@ -7,7 +7,7 @@ import { CldImage, CldUploadButton } from 'next-cloudinary'
 import React, { useEffect, useRef, useState } from 'react'
 import { AiFillEye, AiFillPrinter, AiOutlineCloudUpload, AiOutlineDownload, AiOutlineEdit, AiOutlineSave } from 'react-icons/ai'
 import { CiMail } from 'react-icons/ci'
-import { useReactToPrint } from 'react-to-print';
+import { useReactToPrint } from "react-to-print";
 
 const InvoicePage = () => {
     const [selectedTerm, setSelectedTerm] = useState('');

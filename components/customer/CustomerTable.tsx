@@ -58,7 +58,7 @@ const CustomerTable = () => {
         <>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs  bg-cyan-600 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
                                 company
@@ -67,10 +67,10 @@ const CustomerTable = () => {
                                 contact Person
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                customer_email
+                                customer email
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                work_phone
+                                work phone
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 View

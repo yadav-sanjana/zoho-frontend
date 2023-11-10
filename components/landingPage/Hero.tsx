@@ -1,6 +1,6 @@
 import React from 'react'
 import ThemeLink from './ThemeLink'
-import invoiceHeaderImage from '../../public/logo.jpeg'
+import invoiceHeaderImage from './../../public/hero/download.png'
 import Image from 'next/image'
 
 const Hero = () => {

@@ -38,7 +38,7 @@ const LoginForm: React.FC = () => {
       <div>
         <NavBar />
       </div>
-      <div className="flex w-full min-h-screen">
+      <div className="flex w-full min-h-screen mt-14 fixed">
         <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
         >
 
@@ -50,7 +50,7 @@ const LoginForm: React.FC = () => {
         </div>
 
         <div className="w-1/2 bg-gray-200 flex items-center justify-center">
-          <div className="bg-gray-200 p-16 rounded-md shadow-md w-96 border-4 border-cyan-800">
+          <div className="bg-gray-200 px-8 rounded-md shadow-md w-96 border-4 border-cyan-800">
             <div className='pb-4'>
               <div className="text-3xl p-2 font-semibold text-center">
                 Welcome Back
@@ -93,7 +93,7 @@ const LoginForm: React.FC = () => {
                 >
                   {loading ? 'Logging in...' : 'Log In'}
                 </button>
-                <p className='mt-5'>Not a user? <a className='text-blue-800' href="/register">Sign Up</a></p>
+                <p className='my-5'>Not a user? <a className='text-blue-800' href="/register">Sign Up</a></p>
               </div>
             </form>
           </div>

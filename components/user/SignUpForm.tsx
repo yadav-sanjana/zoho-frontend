@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
-import { CopyX } from 'lucide-react';
 import NavBar from '../landingPage/NavBar';
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
@@ -43,10 +42,10 @@ const SignupForm: React.FC = () => {
 
     return (
         <>
-            <div>
+            <div className='fixed'>
                 <NavBar />
             </div>
-            <div className="flex w-full min-h-screen">
+            <div className="flex w-full min-h-screen mt-14 fixed">
                 <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
                 >
 
@@ -57,8 +56,8 @@ const SignupForm: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-1/2 bg-gray-200 flex items-center justify-center">
-                    <div className="bg-gray-200 p-8 rounded-md w-96 shadow-md border-4 border-cyan-800">
+                <div className="w-1/2 bg-gray-200 flex items-center justify-center px-2">
+                    <div className="bg-gray-200 px-8 rounded-md w-96 shadow-md border-4 border-cyan-800">
                         <div className='pb-4'>
                             <div className="text-3xl p-2 font-semibold text-center">
                                 Let's get Started
