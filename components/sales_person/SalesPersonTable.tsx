@@ -16,13 +16,11 @@ const SalesPersonTable = () => {
     const [data, setData] = useState<UserType[]>([]);
     const [sales_id, setSales_id] = useState(1)
 
-    const [enableEdit, setEnableEdit] = useState(false)
+    const [editForm, setEditForm] = useState(false)
 
     const editHandle = (id) => {
-        setEnableEdit(true)
+        setEditForm(true)
         setSales_id(id)
-
-        console.log(id, "edit enabled")
     }
 
     useEffect(() => {
@@ -91,9 +89,9 @@ const SalesPersonTable = () => {
                     </tbody>
 
                 </table>
-                {enableEdit && (
-                        <EditSalesPerson sales_id={sales_id} enableEdit={enableEdit} />
-                    )}
+                {editForm && (
+                    <EditSalesPerson sales_id={sales_id} editForm={editForm} setEditForm={setEditForm} />
+                )}
             </div >
         </>
     );

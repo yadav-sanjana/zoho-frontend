@@ -2,11 +2,10 @@ import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
-const EditSalesPerson = ({ sales_id, enableEdit }) => {
-    console.log(enableEdit, 'enableEdit');
+const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
     const [id, setId] = useState(sales_id)
 
-    const [editForm, setEditForm] = useState(enableEdit)
+
     const [updateData, setUpdateData] = useState({
         name: "",
         emp_id: "",
@@ -42,7 +41,7 @@ const EditSalesPerson = ({ sales_id, enableEdit }) => {
                 }
             });
             console.log(updated.data?.message);
-            setEditForm(false)
+            setEditForm(!editForm)
 
         } catch (error) {
             console.error('Error sending data:', error);
@@ -58,9 +57,10 @@ const EditSalesPerson = ({ sales_id, enableEdit }) => {
     }
 
     const handleClose = () => {
-        setEditForm(false)
-        console.log(!enableEdit)
+        setEditForm(!editForm)
+        console.log(!editForm)
         console.log("closed box");
+        console.log(editForm, "editForm sated")
     }
 
     return (
@@ -105,7 +105,7 @@ const EditSalesPerson = ({ sales_id, enableEdit }) => {
 
                                                 <div className="flex items-center">
                                                     <label className="block text-gray-600 text-sm w-full">ID : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Employee ID' name='emp_id' onChange={handleInputChange} value={updateData.emp_id} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Employee ID' name='emp_id' onChange={handleInputChange} value={updateData.emp_id} disabled />
                                                 </div>
 
                                                 <div className="flex items-center">
