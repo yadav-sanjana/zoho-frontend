@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Edit, Eye } from 'lucide-react';
+import { Edit } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import EditSalesPerson from './EditSalesPerson';
 
@@ -16,13 +16,13 @@ const SalesPersonTable = () => {
     const [data, setData] = useState<UserType[]>([]);
     const [sales_id, setSales_id] = useState(1)
 
-    const [enableEdit, setEnableEdit] = useState<boolean>(false)
+    const [enableEdit, setEnableEdit] = useState(false)
 
     const editHandle = (id) => {
         setEnableEdit(true)
         setSales_id(id)
 
-        console.log("edit enabled")
+        console.log(id, "edit enabled")
     }
 
     useEffect(() => {
@@ -79,20 +79,21 @@ const SalesPersonTable = () => {
 
                                 <td className="px-6 py-4">{item.contact_number}</td>
                                 <td className="px-6 py-4">{item.role}</td>
-                                <button onClick={() => editHandle(item.id)} type='button'>
+                                <td className="px-6 py-4">
+                                    <button onClick={() => editHandle(item.id)} type='button'>
 
-                                    <td className="px-6 py-4">
                                         <Edit />
-
-                                    </td>
-                                </button>
+                                    </button>
+                                </td>
                             </tr>
                         ))}
-                        {enableEdit && (
-                            <EditSalesPerson sales_id={sales_id} enableEdit={!enableEdit} />
-                        )}
+
                     </tbody>
+
                 </table>
+                {enableEdit && (
+                        <EditSalesPerson sales_id={sales_id} enableEdit={enableEdit} />
+                    )}
             </div >
         </>
     );

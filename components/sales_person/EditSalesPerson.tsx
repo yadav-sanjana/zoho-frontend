@@ -2,13 +2,11 @@ import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
-const EditSalesPerson = (sales_id, enableEdit) => {
-    const [id, setId] = useState(sales_id.sales_id)
+const EditSalesPerson = ({ sales_id, enableEdit }) => {
+    console.log(enableEdit, 'enableEdit');
+    const [id, setId] = useState(sales_id)
 
-    const [editForm, setEditForm] = useState<boolean>(enableEdit)
-
-    const [salePerson, setSalePerson] = useState({})
-
+    const [editForm, setEditForm] = useState(enableEdit)
     const [updateData, setUpdateData] = useState({
         name: "",
         emp_id: "",
@@ -17,18 +15,15 @@ const EditSalesPerson = (sales_id, enableEdit) => {
         role: ""
     })
     useEffect(() => {
+        setId(sales_id)
         const fetchData = async () => {
-            setId(sales_id.sales_id)
-            console.log(sales_id)
+            console.log(sales_id, "sales id")
             try {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person/${id}`, {
                     headers: {
                         'Authorization': localStorage.getItem('token')
                     }
                 });
-                setSalePerson(response.data);
-                console.log(response.data, "sales person data");
-
                 setUpdateData(response.data)
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -36,26 +31,22 @@ const EditSalesPerson = (sales_id, enableEdit) => {
         };
 
         fetchData();
-    }, []);
-
-    useEffect(() => {
-        handleSubmit
-    })
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setId(sales_id.sales_id)
         try {
-            await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person/${id}`, updateData, {
+            const updated = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person/${id}`, updateData, {
                 headers: {
                     'Authorization': localStorage.getItem('token')
                 }
             });
-            console.log('Data sent successfully!');
+            console.log(updated.data?.message);
+            setEditForm(false)
+
         } catch (error) {
             console.error('Error sending data:', error);
         }
-        setEditForm(!enableEdit)
     }
 
     const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -68,12 +59,13 @@ const EditSalesPerson = (sales_id, enableEdit) => {
 
     const handleClose = () => {
         setEditForm(false)
-        console.log("closed box")
+        console.log(!enableEdit)
+        console.log("closed box");
     }
 
     return (
         <>
-            {editForm ? (
+            {editForm && (
                 <>
                     <div
                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none w-full"
@@ -158,7 +150,7 @@ const EditSalesPerson = (sales_id, enableEdit) => {
                     </div>
                     <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                 </>
-            ) : null}
+            )}
         </>
     )
 }
