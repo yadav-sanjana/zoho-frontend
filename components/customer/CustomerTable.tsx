@@ -24,20 +24,20 @@ const CustomerTable = () => {
     const [showCustomerUpdateForm, setShowCustomerUpdateForm] = useState(false);
     const [selectedCustomerId, setSelectedCustomerId] = useState(null);
 
-    const [sheetTrigger, setSheetTrigger] = useState(false)
 
     const handleCustomerDetailClick = (customerId) => {
+        setShowCustomerUpdateForm(false);
         setSelectedCustomerId(customerId);
         setShowCustomerDetail(true);
-        setSheetTrigger(true)
-
         console.log(customerId);
 
     };
 
     const handleCustomerUpdateClick = (customerId) => {
+        setShowCustomerDetail(false);
         setSelectedCustomerId(customerId);
         setShowCustomerUpdateForm(true);
+        console.log(customerId, "update ID")
     };
 
     useEffect(() => {
@@ -58,7 +58,7 @@ const CustomerTable = () => {
         <>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs  bg-cyan-600 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                    <thead className="text-xs bg-gray-200 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
                                 company
@@ -81,40 +81,46 @@ const CustomerTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((data, index) => (
+                        {data.map((detail, index) => (
                             <tr
                                 key={index}
                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                             >
                                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {data.company}
+                                    {detail.company}
                                 </td>
-                                <td className="px-6 py-4">{data.contactPerson}</td>
-                                <td className="px-6 py-4">{data.customer_email}</td>
-                                <td className="px-6 py-4">{data.work_phone}</td>
+                                <td className="px-6 py-4">{detail.contactPerson}</td>
+                                <td className="px-6 py-4">{detail.customer_email}</td>
+                                <td className="px-6 py-4">{detail.work_phone}</td>
 
                                 {/* view */}
                                 <td className="px-6 py-4">
-                                    <button onClick={() => handleCustomerDetailClick(data.id)}><Eye />
-                                        {showCustomerDetail && (
-                                            <CustomerDetail id={selectedCustomerId} sheetTrigger={sheetTrigger} />
-                                        )}
-
+                                    <button onClick={() => handleCustomerDetailClick(detail.id)}><Eye />
                                     </button>
+
                                 </td>
+
 
                                 <td className="px-6 py-4">
                                     {/* edit */}
-                                    <button onClick={() => handleCustomerUpdateClick(data.id)}><Edit />
-                                        {showCustomerUpdateForm ? (
-                                            <CustomerUpdateForm customer_id={selectedCustomerId} />
-                                        ) : null}
+                                    <button onClick={() => handleCustomerUpdateClick(detail.id)}><Edit />
+
                                     </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
+                    {
+                        showCustomerDetail && (
+                            <CustomerDetail id={selectedCustomerId} setShowDetails={true} />
+                        )
+                    }
+                    {showCustomerUpdateForm && (
+                        <CustomerUpdateForm customer_id={selectedCustomerId} setUpdateDetail={true} />
+                    )
+                    }
                 </table>
+
             </div>
         </>
     );

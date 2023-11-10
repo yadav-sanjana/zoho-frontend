@@ -22,22 +22,26 @@ interface CustomerType {
     updatedAt: string;
 }
 
-const CustomerDetail = ({ id, sheetTrigger }) => {
+const CustomerDetail = ({ id, setShowDetails }) => {
     const [customer, setCustomer] = useState<CustomerType>();
-    const [showDetails, setShowDetails] = useState(sheetTrigger)
-
-    const fetchData = useCallback(async (id) => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${id}`);
-            setCustomer(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }, []);
+    const [showDetails, setShowCustomerDetails] = useState(setShowDetails)
 
     useEffect(() => {
-        fetchData(id);
-    }, [id, fetchData]);
+        const fetchData = async (id) => {
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${id}`);
+                setShowCustomerDetails(setShowDetails)
+                setCustomer(response.data);
+                console.log(id)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData(id)
+    }, [id]);
+    const closeHandle = () => {
+        setShowCustomerDetails(false)
+    }
 
     return (
         <>
@@ -74,9 +78,9 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
             {showDetails && (
                 <>
                     <div
-                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none w-full"
+                        className="justify-center items-center flex overflow-hidden fixed inset-0 z-50 outline-none focus:outline-none w-full"
                     >
-                        <div className="relative pt-20 w-auto my-6 mx-auto md:max-w-3xl">
+                        <div className="relative m-1 w-auto my-6 mx-auto md:max-w-3xl">
                             {/*content*/}
                             <div className="border-5 p-5 mt-20 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 {/*header*/}
@@ -85,7 +89,7 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                         Customer Information
                                     </h3>
                                     <button
-                                        onClick={() => setShowDetails(!sheetTrigger)}
+                                        onClick={closeHandle}
                                         type="button"
                                         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     >
@@ -111,7 +115,7 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
 
                                                         className="w-96 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                                                     />
-                                            
+
                                                 </div>
                                                 <div className="mb-4 flex">
                                                     <label className="block text-gray-600 text-sm w-80">Contact Person</label>
@@ -146,7 +150,6 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                                         value={customer?.firstname}
 
                                                         className="w-96 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        placeholder='First Name'
                                                         required
                                                     />
                                                     <input
@@ -156,7 +159,6 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                                         value={customer?.lastname}
 
                                                         className="w-96 ml-2 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        placeholder='Last Name'
                                                         required
                                                     />
                                                 </div>
@@ -181,7 +183,6 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                                         value={customer?.work_phone}
 
                                                         className="w-50 p-1 mx-4 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        placeholder='Work Phone'
                                                         required
                                                     />
                                                     <input
@@ -191,7 +192,6 @@ const CustomerDetail = ({ id, sheetTrigger }) => {
                                                         value={customer?.mobile_phone}
 
                                                         className="w-50 p-1 border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                                                        placeholder='Mobile Phone'
                                                         required
                                                     />
 
