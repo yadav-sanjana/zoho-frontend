@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
+import Snackbar from '../SnackBar';
 
 const SalesPersonForm = () => {
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const [showModal, setShowModal] = React.useState(false);
     const [personData, setPersonData] = useState({
         name: "",
@@ -22,10 +24,21 @@ const SalesPersonForm = () => {
                 }
             });
             console.log('Data sent successfully!');
-        } catch (error) {
-            console.error('Error sending data:', error);
+            setPersonData({
+                name: "",
+                emp_id: "",
+                email: "",
+                contact_number: "",
+                role: ""
+
+            })
+            setSnackbarMessage("Sales Person Created")
+            setShowModal(false)
+
+        } catch (error: any) {
+            console.error('Error fetching data:', error?.response?.data?.message);
+            setSnackbarMessage(error?.response?.data?.message)
         }
-        setShowModal(false)
 
     }
     const handleInputChange = (e: { target: { name: any; value: any } }) => {
@@ -38,6 +51,8 @@ const SalesPersonForm = () => {
 
     return (
         <>
+            <Snackbar message={snackbarMessage} />
+
             <button
                 className="bg-blue-500 flex text-white px-4 py-2 active:bg-blue-600 font-bold uppercase text-sm rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
@@ -79,28 +94,28 @@ const SalesPersonForm = () => {
                                                 </div>
                                                 <div className="flex items-center">
                                                     <label className="block text-gray-600 text-sm w-full">Name : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Sales Person Name' name='name' onChange={handleInputChange} value={personData.name} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Sales Person Name' name='name' required onChange={handleInputChange} value={personData.name} />
                                                 </div>
 
                                                 <div className="flex items-center">
                                                     <label className="block text-gray-600 text-sm w-full">ID : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' type="text" placeholder='Employee ID' name='emp_id' onChange={handleInputChange} value={personData.emp_id} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 ml-4 mb-1 placeholder:text-slate-400' required type="text" placeholder='Employee ID' name='emp_id' onChange={handleInputChange} value={personData.emp_id} />
                                                 </div>
 
                                                 <div className="flex items-center">
 
                                                     <label className="block text-gray-600 text-sm w-full">Email : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder="salesperson@hysus.com" name='email' onChange={handleInputChange} value={personData.email} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="email" placeholder="salesperson@gmail.com" required name='email' onChange={handleInputChange} value={personData.email} />
                                                 </div>
 
                                                 <div className="flex items-center">
                                                     <label className="block text-gray-600 text-sm w-full">Contact : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder='+91 1111111111' name='contact_number' onChange={handleInputChange} value={personData.contact_number} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' required type="text" placeholder='+91 1111111111' name='contact_number' onChange={handleInputChange} value={personData.contact_number} />
                                                 </div>
 
                                                 <div className="flex items-center">
                                                     <label className="block text-gray-600 text-sm w-full">Role : </label>
-                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder='Role' name='role' onChange={handleInputChange} value={personData.role} />
+                                                    <input className='h-7 text-base border-2 border-gray-200 p-1 mb-1 ml-4 placeholder:text-slate-400' type="text" placeholder='Role' name='role' onChange={handleInputChange} required value={personData.role} />
                                                 </div>
                                             </div>
 

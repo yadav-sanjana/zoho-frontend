@@ -5,9 +5,11 @@ import '../../app/(dashboard)/(routes)/dashboard/page'
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
 import NavBar from '../landingPage/NavBar';
+import Snackbar from '../SnackBar';
 
 
 const LoginForm: React.FC = () => {
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [email, setEmail] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,8 +28,9 @@ const LoginForm: React.FC = () => {
       localStorage.setItem('token', response.data.token)
       console.log(response.data);
       window.location.href = "/dashboard"
-    } catch (error) {
+    } catch (error : any) {
       console.error('Error logging in:', error);
+      setSnackbarMessage(error?.response?.data?.message)
     } finally {
       setLoading(false);
     }
@@ -48,6 +51,8 @@ const LoginForm: React.FC = () => {
             {/* <Home className='h-9 w-8 text-white' /> */}
           </div>
         </div>
+        <Snackbar message={snackbarMessage} />
+
 
         <div className="w-1/2 bg-gray-200 flex items-center justify-center">
           <div className="bg-gray-200 px-8 rounded-md shadow-md w-96 border-4 border-cyan-800">

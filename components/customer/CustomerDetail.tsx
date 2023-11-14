@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import { X } from 'lucide-react';
+import Snackbar from '../SnackBar';
 
 interface CustomerType {
     id: number;
@@ -23,6 +24,8 @@ interface CustomerType {
 }
 
 const CustomerDetail = ({ id, setShowDetails }) => {
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
     const [customer, setCustomer] = useState<CustomerType>();
     const [showDetails, setShowCustomerDetails] = useState(setShowDetails)
 
@@ -33,8 +36,9 @@ const CustomerDetail = ({ id, setShowDetails }) => {
                 setShowCustomerDetails(setShowDetails)
                 setCustomer(response.data);
                 console.log(id)
-            } catch (error) {
-                console.error('Error fetching data:', error);
+            } catch (error: any) {
+                console.error('Error fetching data:', error?.response?.data?.message);
+                setSnackbarMessage(error?.response?.data?.message)
             }
         };
         fetchData(id)
@@ -45,6 +49,7 @@ const CustomerDetail = ({ id, setShowDetails }) => {
 
     return (
         <>
+            <Snackbar message={snackbarMessage} />
             {showDetails && (
                 <>
                     <div

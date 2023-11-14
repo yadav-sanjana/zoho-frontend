@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import Snackbar from '../SnackBar';
 
 
 const CustomerUpdateForm = ({ customer_id, setUpdateDetail }) => {
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const [customer, setCustomer] = useState({
         customerType: 'business' || 'individual',
@@ -27,8 +29,10 @@ const CustomerUpdateForm = ({ customer_id, setUpdateDetail }) => {
                 setUpdateDetailModal(setUpdateDetail)
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${customer_id}`);
                 setCustomer(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+
+            } catch (error: any) {
+                console.error('Error fetching data:', error?.response?.data?.message);
+                setSnackbarMessage(error?.response?.data?.message)
             }
         }
         fetchData(customer_id);
@@ -40,10 +44,13 @@ const CustomerUpdateForm = ({ customer_id, setUpdateDetail }) => {
         try {
             const updatedCustomer = await axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/customer/${customer_id}`, customer);
             console.log(updatedCustomer?.data.message);
-        } catch (error) {
-            console.error('Error sending data:', error);
+            setSnackbarMessage(updatedCustomer?.data.message)
+            setUpdateDetailModal(false)
+            
+        } catch (error: any) {
+            console.error('Error fetching data:', error?.response?.data?.message);
+            setSnackbarMessage(error?.response?.data?.message)
         }
-        setUpdateDetailModal(false)
     };
 
     const handleChange = (e) => {
@@ -56,6 +63,7 @@ const CustomerUpdateForm = ({ customer_id, setUpdateDetail }) => {
     return (
 
         <>
+            <Snackbar message={snackbarMessage} />
             {updateDetailModal && (
                 <>
                     <div

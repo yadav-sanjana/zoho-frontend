@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Edit } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import EditSalesPerson from './EditSalesPerson';
+import Snackbar from '../SnackBar';
 
 interface UserType {
     id: number;
@@ -15,6 +16,7 @@ interface UserType {
 const SalesPersonTable = () => {
     const [data, setData] = useState<UserType[]>([]);
     const [sales_id, setSales_id] = useState(1)
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const [editForm, setEditForm] = useState(false)
 
@@ -29,8 +31,9 @@ const SalesPersonTable = () => {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/sales-person`);
                 setData(response.data);
                 console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+            } catch (error: any) {
+                console.error('Error fetching data:', error?.response?.data?.message);
+                setSnackbarMessage(error?.response?.data?.message)
             }
         };
 
@@ -39,6 +42,8 @@ const SalesPersonTable = () => {
 
     return (
         <>
+            <Snackbar message={snackbarMessage} />
+
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

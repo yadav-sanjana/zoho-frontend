@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
+import Snackbar from '../SnackBar';
 
 const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
     const [id, setId] = useState(sales_id)
-
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const [updateData, setUpdateData] = useState({
         name: "",
@@ -24,8 +25,9 @@ const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
                     }
                 });
                 setUpdateData(response.data)
-            } catch (error) {
-                console.error('Error fetching data:', error);
+            } catch (error: any) {
+                console.error('Error fetching data:', error?.response?.data?.message);
+                setSnackbarMessage(error?.response?.data?.message)
             }
         };
 
@@ -40,11 +42,12 @@ const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
                     'Authorization': localStorage.getItem('token')
                 }
             });
-            console.log(updated.data?.message);
-            setEditForm(!editForm)
+            setSnackbarMessage("Updated Successfully")
 
-        } catch (error) {
-            console.error('Error sending data:', error);
+            setEditForm(!editForm)
+        } catch (error: any) {
+            console.error('Error fetching data:', error?.response?.data?.message);
+            setSnackbarMessage(error?.response?.data?.message)
         }
     }
 
@@ -65,6 +68,7 @@ const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
 
     return (
         <>
+            <Snackbar message={snackbarMessage} />
             {editForm && (
                 <>
                     <div

@@ -4,9 +4,12 @@ import axios from 'axios';
 import NavBar from '../landingPage/NavBar';
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
+import Snackbar from '../SnackBar';
 
 
 const SignupForm: React.FC = () => {
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
 
     const [signUpData, setSignUpData] = useState({
         name: "",
@@ -29,12 +32,13 @@ const SignupForm: React.FC = () => {
 
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user`, signUpData);
-
             console.log(response.data);
+            setSnackbarMessage("Successfully registered")
             console.log(signUpData);
-            window.location.href = '/dashboard';
-        } catch (error) {
-            console.error('Error', error);
+            window.location.href = '/login';
+        } catch (error : any) {
+            console.error('Error',error?.response?.data?.message);
+            setSnackbarMessage(error?.response?.data?.message)
         } finally {
             setLoading(false);
         }
@@ -45,6 +49,7 @@ const SignupForm: React.FC = () => {
             <div className='fixed'>
                 <NavBar />
             </div>
+
             <div className="flex w-full min-h-screen mt-14 fixed">
                 <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
                 >
@@ -55,8 +60,10 @@ const SignupForm: React.FC = () => {
                         {/* <Home className='h-9 w-8 text-white' /> */}
                     </div>
                 </div>
+                <Snackbar message={snackbarMessage} />
 
                 <div className="w-1/2 bg-gray-200 flex items-center justify-center px-2">
+
                     <div className="bg-gray-200 px-8 rounded-md w-96 shadow-md border-4 border-cyan-800">
                         <div className='pb-4'>
                             <div className="text-3xl p-2 font-semibold text-center">
@@ -85,7 +92,7 @@ const SignupForm: React.FC = () => {
                                     Email
                                 </label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     id="email"
                                     name="email"
                                     value={signUpData.email}
@@ -116,7 +123,7 @@ const SignupForm: React.FC = () => {
                                     {loading ? 'Signing up...' : 'Sign Up'}
                                 </button>
 
-                                <p className='mt-5'>Already registered? <a className='text-blue-800' href="/login">Login</a></p>
+                                <p className='my-5'>Already registered? <a className='text-blue-800' href="/login">Login</a></p>
 
                             </div>
                         </form>

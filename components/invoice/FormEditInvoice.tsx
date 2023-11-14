@@ -66,7 +66,6 @@ const FormEditInvoice = () => {
     }
     const handleSubmit = (e: { preventDefault: () => void }) => {
         e.preventDefault()
-
         console.log(formData);
 
     }

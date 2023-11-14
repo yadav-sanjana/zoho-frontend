@@ -3,6 +3,7 @@ import { Edit, Eye } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import CustomerDetail from './CustomerDetail';
 import CustomerUpdateForm from './CustomerUpdateForm';
+import Snackbar from '../SnackBar';
 
 interface CustomerType {
     id: number;
@@ -19,6 +20,8 @@ interface CustomerType {
 }
 
 const CustomerTable = () => {
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
     const [data, setData] = useState<CustomerType[]>([]);
     const [showCustomerDetail, setShowCustomerDetail] = useState(false);
     const [showCustomerUpdateForm, setShowCustomerUpdateForm] = useState(false);
@@ -46,8 +49,10 @@ const CustomerTable = () => {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/customer`);
                 setData(response.data);
                 console.log(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
+            } catch (error: any) {
+
+                console.error('Error fetching data:', error?.response?.data?.message);
+                setSnackbarMessage(error?.response?.data?.message)
             }
         };
 
@@ -56,6 +61,7 @@ const CustomerTable = () => {
 
     return (
         <>
+            <Snackbar message={snackbarMessage} />
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs bg-gray-200 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">

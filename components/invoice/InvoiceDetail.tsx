@@ -1,6 +1,7 @@
 import { CldImage } from 'next-cloudinary'
 import React, { useState } from 'react'
 import PreviewTable from './PreviewTable'
+import ItemTable from './InvoiceItems'
 
 const FormPreview = ({ data }) => {
     const {
@@ -100,7 +101,7 @@ const FormPreview = ({ data }) => {
                 </div>
             </div >
             {/* table */}
-            < PreviewTable tableData={tableData} />
+            < ItemTable tableData={tableData} />
 
         </form >
     )

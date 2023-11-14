@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, X } from 'lucide-react';
+import Snackbar from '../SnackBar';
 
 const CustomerForm = () => {
     const [showModal, setShowModal] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
     const [formData, setFormData] = useState({
         customerType: 'business' || 'individual',
         contactPerson: '',
@@ -23,9 +26,12 @@ const CustomerForm = () => {
 
         try {
             await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/customer`, formData);
+            setSnackbarMessage("Customer created successfully")
             console.log('Data sent successfully!');
-        } catch (error) {
-            console.error('Error sending data:', error);
+            setShowModal(false)
+        } catch (error: any) {
+            console.error('Error fetching data:', error?.response?.data?.message);
+            setSnackbarMessage(error?.response?.data?.message)
         }
     };
 
@@ -46,6 +52,8 @@ const CustomerForm = () => {
             >
                 <Plus className="h-6 w-5 mr-3" />Add Customer
             </button>
+            <Snackbar message={snackbarMessage} />
+
             {showModal ? (
                 <>
                     <div
@@ -155,7 +163,7 @@ const CustomerForm = () => {
                                                 <div className="mb-4 flex">
                                                     <label className="block text-gray-600 text-sm w-80">Email</label>
                                                     <input
-                                                        type="text"
+                                                        type="email"
                                                         name="customer_email"
                                                         value={formData.customer_email}
                                                         onChange={handleChange}
@@ -166,7 +174,7 @@ const CustomerForm = () => {
                                                 <div className="mb-4 flex">
                                                     <label className="block text-gray-600 text-sm w-80">Contact</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         name="work_phone"
                                                         value={formData.work_phone}
                                                         onChange={handleChange}
@@ -175,7 +183,7 @@ const CustomerForm = () => {
                                                         required
                                                     />
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         name="mobile_phone"
                                                         value={formData.mobile_phone}
                                                         onChange={handleChange}
