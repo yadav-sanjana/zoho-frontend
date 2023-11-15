@@ -2,21 +2,22 @@ import axios from 'axios'
 import { Eye } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { InvoiceDetail } from './extra/InvoiceDetail'
+import InvoiceView from './InvoiceDetail';
 
 
-interface InvoiceType {
+export interface InvoiceType {
     id: number;
     customer: number;
     invoice_no: string;
-    order_no: number;
+    order_no?: null;
     invoice_date: string;
     terms: number;
     due_date: string;
     sales_person: number;
     subject: string;
-    discount?: null;
-    tax?: null;
-    amount?: number | null;
+    discount: number;
+    tax: string;
+    amount: number;
     balance?: null;
     customer_notes: string;
     ATC: string;
@@ -27,11 +28,11 @@ interface InvoiceType {
     createdAt: string;
     updatedAt: string;
     as_customer: AsCustomer;
+    as_items?: (AsItemsEntity)[] | null;
     as_sales_person: AsSalesPerson;
     as_terms: AsTerms;
 }
-
-interface AsCustomer {
+export interface AsCustomer {
     id: number;
     customerType: string;
     contactPerson: string;
@@ -51,19 +52,56 @@ interface AsCustomer {
     updated_by?: null;
     createdAt: string;
     updatedAt: string;
+    as_company: AsCompany;
 }
-
-interface AsSalesPerson {
+export interface AsCompany {
+    id: number;
+    company_name: string;
+    company_address: string;
+    company_city: string;
+    company_country: string;
+    company_zip: number;
+    company_logo?: null;
+    created_by?: null;
+    updated_by?: null;
+    createdAt: string;
+    updatedAt: string;
+}
+export interface AsItemsEntity {
+    id: number;
+    cart_id: number;
+    invoice_id: number;
+    item: string;
+    quantity: number;
+    rate: number;
+    discount?: null;
+    tax: string;
+    amount: number;
+    createdAt: string;
+    updatedAt: string;
+    as_cart: AsCart;
+}
+export interface AsCart {
+    id: number;
+    customer_id: number;
+    discount: number;
+    tax: number;
+    total_amount: number;
+    payableAmount: number;
+    createdAt: string;
+    updatedAt: string;
+}
+export interface AsSalesPerson {
     id: number;
     email: string;
     name: string;
 }
-
-interface AsTerms {
+export interface AsTerms {
     id: number;
     term: string;
     days: number;
 }
+
 
 const InvoiceTable = () => {
     const [data, setData] = useState<InvoiceType[]>([]);
@@ -144,13 +182,14 @@ const InvoiceTable = () => {
                                 <td className="px-6 py-4">{item.amount}</td>
                                 <td className="px-6 py-4">123</td>
                                 <button className="px-6 py-4" onClick={() => handleDetailClick(item.id)}><Eye />
-                                    {invoiceShowDetail ? (
-                                        <InvoiceDetail id={invoiceId} />
-                                    ) : null}
+
                                 </button>
                             </tr>
                         ))}
                     </tbody>
+                    {invoiceShowDetail && (
+                        <InvoiceView invoice_id={invoiceId} setShowDetails={true}/>
+                    )}
                 </table>
             </div>
         </>

@@ -106,9 +106,7 @@ const Settings = () => {
       [name]: value
     })
   }
-  const handleUplaod = (e) => {
-
-  }
+  
   console.log(companyData, companyLogo,"data payload");
   return (
     <>
