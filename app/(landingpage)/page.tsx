@@ -2,6 +2,7 @@ import Features from "@/components/landingPage/Features";
 import Example from "@/components/landingPage/Hero";
 import NavBar from "@/components/common/NavBar";
 import Pricing from "@/components/landingPage/Pricing";
+import Footer from "@/components/common/Footer";
 
 export default function Home() {
   return (
@@ -10,8 +11,9 @@ export default function Home() {
         <NavBar />
       </div>
       <Example />
-      <Features/>
-      <Pricing/>
+      <Features />
+      <Pricing />
+      <Footer />
     </main>
   )
 }
