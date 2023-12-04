@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
-import NavBar from '../landingPage/NavBar';
+import NavBar from '../common/NavBar';
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
 import Snackbar from '../SnackBar';
@@ -36,8 +36,8 @@ const SignupForm: React.FC = () => {
             setSnackbarMessage("Successfully registered")
             console.log(signUpData);
             window.location.href = '/login';
-        } catch (error : any) {
-            console.error('Error',error?.response?.data?.message);
+        } catch (error: any) {
+            console.error('Error', error?.response?.data?.message);
             setSnackbarMessage(error?.response?.data?.message)
         } finally {
             setLoading(false);
@@ -51,16 +51,6 @@ const SignupForm: React.FC = () => {
             </div>
 
             <div className="flex w-full min-h-screen mt-14 fixed">
-                <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
-                >
-
-                    <Image src={bgImage} alt='background' className='w-full h-full'></Image>
-
-                    <div className="p-8">
-                        {/* <Home className='h-9 w-8 text-white' /> */}
-                    </div>
-                </div>
-                <Snackbar message={snackbarMessage} />
 
                 <div className="w-1/2 bg-gray-200 flex items-center justify-center px-2">
 
@@ -129,6 +119,17 @@ const SignupForm: React.FC = () => {
                         </form>
                     </div>
                 </div>
+                <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
+                >
+
+                    <Image src={bgImage} alt='background' className='w-full h-full'></Image>
+
+                    <div className="p-8">
+                        {/* <Home className='h-9 w-8 text-white' /> */}
+                    </div>
+                </div>
+                <Snackbar message={snackbarMessage} />
+
             </div>
         </>
     );

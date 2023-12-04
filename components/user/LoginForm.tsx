@@ -4,7 +4,7 @@ import axios from 'axios';
 import '../../app/(dashboard)/(routes)/dashboard/page'
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
-import NavBar from '../landingPage/NavBar';
+import NavBar from '../common/NavBar';
 import Snackbar from '../SnackBar';
 
 
@@ -28,7 +28,7 @@ const LoginForm: React.FC = () => {
       localStorage.setItem('token', response.data.token)
       console.log(response.data);
       window.location.href = "/dashboard"
-    } catch (error : any) {
+    } catch (error: any) {
       console.error('Error logging in:', error);
       setSnackbarMessage(error?.response?.data?.message)
     } finally {
@@ -42,17 +42,6 @@ const LoginForm: React.FC = () => {
         <NavBar />
       </div>
       <div className="flex w-full min-h-screen mt-14 fixed">
-        <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
-        >
-
-          <Image src={bgImage} alt='background' className='w-full h-full'></Image>
-
-          <div className="p-8">
-            {/* <Home className='h-9 w-8 text-white' /> */}
-          </div>
-        </div>
-        <Snackbar message={snackbarMessage} />
-
 
         <div className="w-1/2 bg-gray-200 flex items-center justify-center">
           <div className="bg-gray-200 px-8 rounded-md shadow-md w-96 border-4 border-cyan-800">
@@ -103,6 +92,17 @@ const LoginForm: React.FC = () => {
             </form>
           </div>
         </div>
+
+        <div className="w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }}
+        >
+
+          <Image src={bgImage} alt='background' className='w-full h-full'></Image>
+
+          <div className="p-8">
+            {/* <Home className='h-9 w-8 text-white' /> */}
+          </div>
+        </div>
+        <Snackbar message={snackbarMessage} />
       </div>
     </>
   );

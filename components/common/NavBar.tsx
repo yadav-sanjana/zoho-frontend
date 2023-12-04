@@ -8,14 +8,14 @@ const NavBar = () => {
       <Link className='font-bold text-2xl md:text-4xl ' href={'/'}>Invoicer</Link>
 
       <nav className='flex items-center gap-3'>
-        <Link href={'/'}>Features</Link>
-        <Link href={'/'}>Pricing</Link>
-        <Link href={'/'}>Customers</Link>
+        <Link href={'/#features'}>Features</Link>
+        <Link href={'/#price'}>Pricing</Link>
+        <Link href={'/#customer'}>Customers</Link>
       </nav>
 
       <div className='flex items-center gap-4'>
         <Link href={'/login'}>Login</Link>
-        <ThemeLink className=' bg-red-400 hover:bg-red-500 focus:ring-red-300 ' title='Register'  href='/register'/>
+        <ThemeLink className=' bg-red-400 hover:bg-red-500 focus:ring-red-300 ' title='Register' href='/register' />
 
       </div>
     </header>
