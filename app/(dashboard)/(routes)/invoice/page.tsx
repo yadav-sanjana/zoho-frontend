@@ -1,6 +1,6 @@
 'use client'
 import InvoiceTable from '@/components/invoice/InvoiceTable';
-import { Plus } from 'lucide-react';
+import { FaPlus } from "react-icons/fa";
 import Link from 'next/link';
 
 const InvoicePage = () => {
@@ -11,7 +11,7 @@ const InvoicePage = () => {
       >
         <Link href='/invoice/new'>
           <div className='flex items-center space-x-2'>
-            <Plus className="h-6 w-5 mr-3" />
+            <FaPlus className="h-6 w-5 mr-3" />
             <span>Add Invoice</span>
           </div>
         </Link>

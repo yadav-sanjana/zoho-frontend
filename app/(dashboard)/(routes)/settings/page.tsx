@@ -1,6 +1,6 @@
 'use client'
 import axios from 'axios';
-import { Edit } from 'lucide-react';
+import { FaEdit } from "react-icons/fa";
 import { CldUploadButton } from 'next-cloudinary';
 import React, { useEffect, useState } from 'react'
 import { AiOutlineCloudUpload } from 'react-icons/ai';
@@ -138,7 +138,7 @@ const Settings = () => {
                   <table>
                     <div className="flex">
                       <thead className='text-black-800 text-2xl'>Company Details</thead>
-                      <button className='px-4 text-blue-400 items-end' type='button' onClick={() => setShowCompanyForm(true)}><Edit /></button>
+                      <button className='px-4 text-blue-400 items-end' type='button' onClick={() => setShowCompanyForm(true)}><FaEdit /></button>
                     </div>
                     <tbody>
                       <tr>

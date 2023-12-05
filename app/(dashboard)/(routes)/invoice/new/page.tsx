@@ -143,6 +143,8 @@ const InvoicePage = () => {
                 if (!customerResponse.data) {
                     throw new Error('Network response was not ok');
                 }
+                console.log(customerResponse.data);
+                
                 setcustomer(customerResponse.data);
                 setLoading(false);
             } catch (error) {

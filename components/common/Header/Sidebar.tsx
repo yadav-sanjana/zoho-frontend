@@ -1,7 +1,4 @@
 'use client';
-
-import { Montserrat } from 'next/font/google';
-import logo from '../public/logo.jpeg'
 import Image from 'next/image'
 import Link from "next/link";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -29,7 +26,7 @@ const routes = [
         label: "Sale Person",
         icon: GrUserManager,
         href: '/sales-person',
-        color: 'text-pink-500'
+        color: 'text-white-500'
     },
     {
         label: "Invoice",
@@ -51,10 +48,10 @@ const Sidebar = () => {
         <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white align-item-center">
             <div className="px-3 py-2 flex-1">
                 <Link href='/dashboard' className='flex items-center pl-3 mb-14'>
-                    <div className='relative w-24 h-16 mr-4'>
+                    <div className='relative w-24 h-16 mr-4 bg-white'>
                         <Image
                             fill
-                            src={logo}
+                            src={'bl.png'}
                             alt='logo' />
                     </div>
                 </Link>
@@ -66,7 +63,7 @@ const Sidebar = () => {
                             className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition", 
                             pathName === route.href ? "text-white bg-white/10" : "text-zinc-400")}>
                             <div className='flex items-center flex-1'>
-                                <route.icon className={cn('h-6 w-5 mr-3', route.color)} />
+                                <route.icon className={cn('h-6 w-5 mr-3', route.color)}/>
                                 {route.label}
                             </div>
                         </Link>
