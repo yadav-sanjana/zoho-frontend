@@ -1,10 +1,10 @@
 'use client'
 import React, { useState } from 'react';
 import axios from 'axios';
-import NavBar from '../common/NavBar';
+import NavBar from '../common/Header/NavBar';
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 
 const SignupForm: React.FC = () => {

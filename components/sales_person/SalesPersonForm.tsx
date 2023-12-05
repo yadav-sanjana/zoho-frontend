@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { X } from 'lucide-react';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 const SalesPersonForm = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');

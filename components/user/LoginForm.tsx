@@ -4,8 +4,8 @@ import axios from 'axios';
 import '../../app/(dashboard)/(routes)/dashboard/page'
 import bgImage from '../../public/login/bg images.png'
 import Image from 'next/image';
-import NavBar from '../common/NavBar';
-import Snackbar from '../SnackBar';
+import NavBar from '../common/Header/NavBar';
+import Snackbar from '../common/SnackBar';
 
 
 const LoginForm: React.FC = () => {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import { X } from 'lucide-react';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 interface CustomerType {
     id: number;

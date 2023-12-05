@@ -1,12 +1,12 @@
 'use client';
 
-import { Menu } from 'lucide-react'
-import { Button } from './ui/button'
+import { IoMenu } from "react-icons/io5";
+import { Button } from '../../ui/button'
 import {
     Sheet,
     SheetContent,
     SheetTrigger
-} from './ui/sheet';
+} from '../../ui/sheet';
 import Sidebar from './Sidebar';
 
 const MobileSideBar = () => {
@@ -14,7 +14,7 @@ const MobileSideBar = () => {
         <Sheet>
             <SheetTrigger>
                 <Button variant="ghost" size='icon' className='md:hidden'>
-                    <Menu />
+                    <IoMenu />
                 </Button>
             </SheetTrigger>
             <SheetContent side='left' className='p-0'>

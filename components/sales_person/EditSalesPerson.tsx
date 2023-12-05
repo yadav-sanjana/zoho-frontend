@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 const EditSalesPerson = ({ sales_id, editForm, setEditForm }) => {
     const [id, setId] = useState(sales_id)

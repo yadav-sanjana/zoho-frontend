@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Edit } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import EditSalesPerson from './EditSalesPerson';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 interface UserType {
     id: number;

@@ -3,7 +3,7 @@ import { Edit, Eye } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import CustomerDetail from './CustomerDetail';
 import CustomerUpdateForm from './CustomerUpdateForm';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 interface CustomerType {
     id: number;

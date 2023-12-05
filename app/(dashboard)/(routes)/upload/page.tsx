@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import Snackbar from '../../../../components/SnackBar' 
+import Snackbar from '../../../../components/common/SnackBar' 
 
 const YourPage: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');

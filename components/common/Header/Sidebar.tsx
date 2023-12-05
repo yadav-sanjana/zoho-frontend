@@ -4,30 +4,30 @@ import { Montserrat } from 'next/font/google';
 import logo from '../public/logo.jpeg'
 import Image from 'next/image'
 import Link from "next/link";
-import { LayoutDashboard, FileStack, Settings, Users2, UserCheck, User } from 'lucide-react'
+import { MdSpaceDashboard } from "react-icons/md";
+import { IoSettingsOutline } from "react-icons/io5";
+import { GrUserManager } from "react-icons/gr";
+import { FaRegUser } from "react-icons/fa";
+import { FileStack } from 'lucide-react'
 import { cn } from '@/lib/utils';
 import { usePathname} from 'next/navigation'
-
-const monsterrat = Montserrat({
-    weight: '600', subsets: ['latin']
-})
 
 const routes = [
     {
         label: "Dashboard",
-        icon: LayoutDashboard,
+        icon: MdSpaceDashboard,
         href: '/dashboard',
         color: 'text-sky-500'
     },
     {
         label: "Customer",
-        icon: Users2,
+        icon: FaRegUser,
         href: '/customer',
         color: 'text-blue-500'
     },
     {
         label: "Sale Person",
-        icon: UserCheck,
+        icon: GrUserManager,
         href: '/sales-person',
         color: 'text-pink-500'
     },
@@ -39,7 +39,7 @@ const routes = [
     },
     {
         label: "Settings",
-        icon: Settings,
+        icon: IoSettingsOutline,
         href: '/settings',
         color: 'text-gray-500'
     }

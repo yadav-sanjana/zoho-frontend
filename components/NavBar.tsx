@@ -1,5 +1,5 @@
 'use client'
-import MobileSideBar from './mobile-sidebar'
+import MobileSideBar from './common/Header/mobile-sidebar'
 import UserLogin from './user/UserLogin'
 
 export const NavBar = () => {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
-import Snackbar from '../SnackBar';
+import Snackbar from '../common/SnackBar';
 
 
 const CustomerUpdateForm = ({ customer_id, setUpdateDetail }) => {
