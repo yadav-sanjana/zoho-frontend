@@ -12,7 +12,7 @@ import { CgInsights } from "react-icons/cg";
 const Features = () => {
     return (
         <div>
-            <div className="text-gray-700" id='features'>
+            <div className="text-gray-700 bg-slate-200" id='features'>
                 <div className=" mx-auto pt-10">
                     <p className='text-3xl font-semibold text-center justify-center flex'>Features</p>
                     <div className="flex flex-wrap justify-center max-w-screen-2xl items-center">

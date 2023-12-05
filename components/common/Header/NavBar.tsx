@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const NavBar = () => {
   return (
-    <header className='bg-cyan-600 fixed top-0 right-0 w-full left-0 h-16 flex items-center justify-between px-16 text-slate-50'>
+    <header className='bg-cyan-600 fixed top-0 right-0 w-full left-0 h-16 flex items-center justify-between px-16 py-7 text-slate-50'>
       <Link className='font-bold text-2xl md:text-4xl ' href={'/'}>
         <Image src={'bl.png'} alt='logo' width={100} height={100}/>
       </Link>
@@ -18,7 +18,7 @@ const NavBar = () => {
 
       <div className='flex items-center gap-4'>
         <Link href={'/login'}>Login</Link>
-        <ThemeLink className=' bg-red-400 hover:bg-red-500 focus:ring-red-300 ' title='Register' href='/register' />
+        <ThemeLink className=' bg-red-400 hover:bg-red-500 focus:ring-red-300 mb-2' title='Register' href='/register' />
 
       </div>
     </header>

@@ -5,7 +5,7 @@ import React from 'react'
 const Pricing = () => {
   return (
     <div>
-      <div className="text-gray-700" id='price'>
+      <div className="text-gray-700 bg-slate-200" id='price'>
         <div className="mx-auto flex flex-col pt-10">
           <p className='text-3xl font-semibold text-center justify-center flex'>Pricing</p>
           <div className="flex flex-wrap justify-center">
