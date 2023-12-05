@@ -9,7 +9,7 @@ const Pricing = () => {
         <div className="mx-auto flex flex-col pt-10">
           <p className='text-3xl font-semibold text-center justify-center flex'>Pricing</p>
           <div className="flex flex-wrap justify-center">
-            <div className="min-w-screen flex-row flex justify-center sm:w-1/2 lg:w-1/4 p-4 transition-transform duration-300 transform hover:-translate-y-1">
+            <div className="min-w-screen flex-row flex justify-center sm:w-1/2 lg:w-1/4 p-4 transition-transform duration-300 hover:-translate-y-1">
               <div className="max-w-sm hover:bg-gray-200 p-6 bg-white border border-gray-200 rounded-lg shadow">
 
                 <div className="items-center flex flex-col">

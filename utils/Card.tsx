@@ -19,7 +19,7 @@ const HelpCard: React.FC<HelpCardProps> = ({ title, content, icon: Icon }) => {
                         <p className="my-2  text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-600">{title}</p>
                     </a>
                 </div>
-                <p className="mb-2 font-normal text-gray-500 dark:text-gray-400">{content}</p>
+                <p className="mb-2 font-normal text-gray-500">{content}</p>
             </div >
             
 
