@@ -5,7 +5,7 @@ export interface UserType {
     email: string;
     company_id: number;
     created_by: number;
-    updated_by?: null;
+    updated_by?: number;
     createdAt: string;
     updatedAt: string;
     as_company_detail: AsCompanyDetail;

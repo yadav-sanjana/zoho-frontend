@@ -1,4 +1,3 @@
-'use client';
 import SalesPersonForm from '@/components/sales_person/SalesPersonForm';
 import SalesPersonTable from '@/components/sales_person/SalesPersonTable';
 

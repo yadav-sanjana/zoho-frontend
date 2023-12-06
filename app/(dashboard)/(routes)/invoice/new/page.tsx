@@ -1,5 +1,6 @@
 'use client'
 import { UserType, CustomerType } from '@/app/types'
+import Snackbar from '@/components/common/SnackBar'
 import FormPreview from '@/components/invoice/FormPreview'
 import FormTable from '@/components/invoice/FormTable'
 import axios from 'axios'
@@ -14,6 +15,7 @@ const InvoicePage = () => {
     const [preview, setPreview] = useState(false)
     const [logoUrl, setLogoUrl] = useState("")
     const [loading, setLoading] = useState<boolean>(true)
+    const [message, setMessage] = useState<string>('')
 
     const [userInfo, setUserInfo] = useState<UserType>()
     const [combinedData, setCombinedData] = useState({})
@@ -144,7 +146,7 @@ const InvoicePage = () => {
                     throw new Error('Network response was not ok');
                 }
                 console.log(customerResponse.data);
-                
+
                 setcustomer(customerResponse.data);
                 setLoading(false);
             } catch (error) {
@@ -305,14 +307,14 @@ const InvoicePage = () => {
         setCombinedData(allData)
         console.log(combinedData, "combined objected");
 
-
-
         try {
             await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/invoice`, combinedData, {
                 headers: {
                     'Authorization': localStorage.getItem('token')
                 }
             });
+            setMessage('Invoice Created')
+            window.location.href = "/invoice"
             console.log('Data sent successfully!');
         } catch (error) {
             console.error('Error sending data:', error);
@@ -322,6 +324,7 @@ const InvoicePage = () => {
 
     return (
         <div className='bg-slate-50 py-8 md:py-8 px-4 md:px-16'>
+            <Snackbar message={message} />
             <div className="flex justify-between items-center mb-6">
                 <div className="flex gap-4">
                     <button onClick={() => setPreview(!preview)} className='px-3 py-2 rounded-sm border border-slate-600'>
