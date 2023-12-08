@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Eye } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { InvoiceDetail } from './extra/InvoiceDetail'
 import InvoiceView from './InvoiceDetail';
 
 
@@ -176,7 +175,7 @@ const InvoiceTable = () => {
                                 </td>
                                 <td className="px-6 py-4">{item.invoice_no}</td>
                                 <td className="px-6 py-4">{item.order_no}</td>
-                                <td className="px-6 py-4">{item.as_customer.firstname}</td>
+                                <td className="px-6 py-4">{item.as_customer?.firstname}</td>
                                 <td className="px-6 py-4">{item.status}</td>
                                 <td className="px-6 py-4">{item.due_date}</td>
                                 <td className="px-6 py-4">{item.amount}</td>

@@ -174,9 +174,9 @@ const InvoicePage = () => {
                 ...prevData,
                 customer_id: formData.customer_id,
                 clientName: customerInfo.data.firstname,
-                clientAddress: customerInfo.data.as_company.company_address,
-                clientCity: customerInfo.data.as_company.company_city,
-                clientCountry: customerInfo.data.as_company.company_country
+                clientAddress: customerInfo.data.as_company?.company_address,
+                clientCity: customerInfo.data.as_company?.company_city,
+                clientCountry: customerInfo.data.as_company?.company_country
             }));
             setInvoiceForm({
                 ...invoiceForm,
@@ -373,7 +373,7 @@ const InvoicePage = () => {
                                     <CldImage
                                         width="110"
                                         height="110"
-                                        src={formData.companylogo}
+                                        src={formData?.companylogo}
                                         alt="invoice logo"
                                     />
                                 ) : (
@@ -400,11 +400,11 @@ const InvoicePage = () => {
 
                         {/* Company details */}
                         < div className="flex flex-col w-1/2 mt-6" >
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" name='companyName' onChange={handleInputChange} value={formData.companyName} />
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Name' name='invoiceAuthor' onChange={handleInputChange} value={formData.invoiceAuthor} />
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Company's Address" name='companyAddress' onChange={handleInputChange} value={formData.companyAddress} />
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='companyCity' onChange={handleInputChange} value={formData.companyCity} />
-                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Country' name='companyCountry' onChange={handleInputChange} value={formData.companyCountry} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" name='companyName' onChange={handleInputChange} value={formData?.companyName} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Name' name='invoiceAuthor' onChange={handleInputChange} value={formData?.invoiceAuthor} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Company's Address" name='companyAddress' onChange={handleInputChange} value={formData?.companyAddress} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='companyCity' onChange={handleInputChange} value={formData?.companyCity} />
+                            <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Country' name='companyCountry' onChange={handleInputChange} value={formData?.companyCountry} />
                         </div >
 
                         {/* bill to   */}
@@ -414,17 +414,17 @@ const InvoicePage = () => {
                                 <div className="h-7 flex text-base border-0 p-1 mb-1">
                                     <label className="block text-gray-600 text-sm w-1/3">Client</label>
                                     <select id="customer_id" name="customer_id" className="w-2/3  border border-neutral-400 rounded-md focus:outline-none focus:ring focus:border-blue-300" required onChange={handleCustomerDropdownChange}>
-                                        {customer.map((val) => (
+                                        {customer?.map((val) => (
                                             <option key={val.id} value={val.id}>
                                                 {val.firstname}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Client Name' name='clientName' onChange={handleInputChange} value={formData.clientName} />
-                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Client's Address" name='clientAddress' onChange={handleInputChange} value={formData.clientAddress} />
-                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='clientCity' onChange={handleInputChange} value={formData.clientCity} />
-                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Country' name='clientCountry' onChange={handleInputChange} value={formData.clientCountry} />
+                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Client Name' name='clientName' onChange={handleInputChange} value={formData?.clientName} />
+                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder="Client's Address" name='clientAddress' onChange={handleInputChange} value={formData?.clientAddress} />
+                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='City, State Zip' name='clientCity' onChange={handleInputChange} value={formData?.clientCity} />
+                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="text" placeholder='Country' name='clientCountry' onChange={handleInputChange} value={formData?.clientCountry} />
                             </div>
 
                             <div className="flex flex-col w-1/2 mt-6">
@@ -448,7 +448,7 @@ const InvoicePage = () => {
                                 </div>
                                 <div className="flex gap-2">
                                     <label className='font-semibold text-slate-500' htmlFor="due_date">Due Date :</label>
-                                    <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDueDate' onChange={handleInputChange} value={formData.invoiceDueDate} disabled />
+                                    <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="date" name='invoiceDueDate' onChange={handleInputChange} value={formData?.invoiceDueDate} disabled />
                                 </div>
                             </div>
 
@@ -462,7 +462,7 @@ const InvoicePage = () => {
                                 <div className='w-full mr-8'>
                                     <div className="flex font-semibold text-slate-500 justify-between">
                                         <p className='text-base p-2'>Subject:</p>
-                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Write subject...' name='subject' onChange={handleInputChange} value={formData.subject}></textarea>
+                                        <textarea className='text-xl p-2 placeholder:text-base' placeholder='Write subject...' name='subject' onChange={handleInputChange} value={formData?.subject}></textarea>
                                     </div>
                                     <div className="flex font-semibold text-slate-500  justify-between">
                                         <p className='text-base p-2'>Notes:</p>
@@ -500,7 +500,7 @@ const InvoicePage = () => {
                                             <td className='w-1/2'>
                                                 <label className='font-semibold text-slate-500' htmlFor="discount">Discount(₹) :</label>
                                             </td>
-                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData.discount} /></td>
+                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='discount' onChange={handleInputChange} value={formData?.discount} /></td>
                                         </tr>
                                         <tr className='w-full'>
                                             <td className='w-1/2'>
@@ -512,12 +512,12 @@ const InvoicePage = () => {
                                             <td className='w-1/2'>
                                                 <label className='font-semibold text-slate-500' htmlFor="cgst">CGST :</label></td>
                                             <td className='w-1/2'>
-                                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='cgst' onChange={handleInputChange} value={formData.cgst} /></td>
+                                                <input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='cgst' onChange={handleInputChange} value={formData?.cgst} /></td>
                                         </tr>
                                         <tr className='w-full'>
                                             <td className='w-1/2'>
                                                 <label className='font-semibold text-slate-500' htmlFor="sgst">SGST : </label></td>
-                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='sgst' onChange={handleInputChange} value={formData.sgst} /></td>
+                                            <td className='w-1/2'><input className='h-7 text-base border-0 p-1 mb-1 placeholder:text-slate-400' type="number" name='sgst' onChange={handleInputChange} value={formData?.sgst} /></td>
                                         </tr>
                                         <tr className='w-full'>
                                             <td className='w-1/2'>
